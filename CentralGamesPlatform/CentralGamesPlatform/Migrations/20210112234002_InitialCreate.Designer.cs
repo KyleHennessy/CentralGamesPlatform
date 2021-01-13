@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentralGamesPlatform.Migrations
 {
     [DbContext(typeof(MyDatabaseContext))]
-    [Migration("20210112210712_InitialCreate")]
+    [Migration("20210112234002_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
