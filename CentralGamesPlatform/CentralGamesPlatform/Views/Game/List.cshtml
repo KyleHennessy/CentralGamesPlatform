@@ -1,15 +1,22 @@
-﻿@model IEnumerable<CentralGamesPlatform.Models.Game>
+﻿@model GameListViewModel
 @{
     ViewData["Title"] = "Game List";
 }
 
-<h1>List</h1>
-    @foreach(var game in Model)
+<h1>@Model.CurrentCategory</h1>
+<div class="row">
+    @foreach (var game in Model.Games)
     {
-        <div>
-            <h2>@game.Name</h2>
-            <h3>@game.Price.ToString("c")</h3>
-            <h4>@game.Category.CategoryName</h4>
+
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="img-thumbnail">
+                <img src="@game.ImageThumbnailUrl" alt="image thumbnail" />
+                <div class="figure-caption">
+                    <h3 class="float-sm-right">@game.Price.ToString("c")</h3>
+                    <h3>@game.Name</h3>
+                    <h3>@game.Description </h3>
+                </div>
+            </div>
         </div>
     }
-
+</div>

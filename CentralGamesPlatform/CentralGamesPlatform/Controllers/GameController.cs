@@ -1,4 +1,5 @@
 ﻿using CentralGamesPlatform.Models;
+using CentralGamesPlatform.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,15 @@ namespace CentralGamesPlatform.Controllers
 			_categoryRepository = categoryRepository;
 		}
 
-		public ViewResult List()
+		public IActionResult List()
 		{
-			return View(_gameRepository.GetAllGames);
+			//ViewBag.CurrentCategory = "Bestsellers";
+			//return View(_gameRepository.GetAllGames);
+
+			var gameListViewModel = new GameListViewModel();
+			gameListViewModel.Games = _gameRepository.GetAllGames;
+			gameListViewModel.CurrentCategory = "Best Sellers";
+			return View(gameListViewModel);
 		}
 	}
 }
