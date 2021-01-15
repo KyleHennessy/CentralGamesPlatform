@@ -1,0 +1,15 @@
+﻿@model IEnumerable<CentralGamesPlatform.Models.Game>
+@{
+    ViewData["Title"] = "Game List";
+}
+
+<h1>List</h1>
+    @foreach(var game in Model)
+    {
+        <div>
+            <h2>@game.Name</h2>
+            <h3>@game.Price.ToString("c")</h3>
+            <h4>@game.Category.CategoryName</h4>
+        </div>
+    }
+

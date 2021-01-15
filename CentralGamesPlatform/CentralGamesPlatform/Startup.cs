@@ -28,6 +28,8 @@ namespace CentralGamesPlatform
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IGameRepository,GameRepository>();
             services.AddDbContext<MyDatabaseContext>(options =>
                    // options.UseSqlite("Data Source=localdatabase.db"));
                    options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection")));
@@ -47,18 +49,17 @@ namespace CentralGamesPlatform
                 //app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Todos}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                    );
             });
         }
     }
