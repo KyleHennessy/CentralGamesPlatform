@@ -14,6 +14,7 @@ namespace CentralGamesPlatform.Models
         }
         public DbSet<Game> Games { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -48,7 +49,7 @@ namespace CentralGamesPlatform.Models
                 Price = 5.00M,
                 Description = "Spin the wheel for the chance of winning awesome prizes",
                 CategoryId = 2,
-                ImageUrl = "\\images\\gameimages\\placeholder.jpg",
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = true
             });
@@ -60,7 +61,7 @@ namespace CentralGamesPlatform.Models
                 Price = 5.00M,
                 Description = "Scratch card where any prizes you reveal are yours to keep",
                 CategoryId = 3,
-                ImageUrl = "\\images\\gameimages\\placeholder.jpg",
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = true
             });
@@ -72,7 +73,7 @@ namespace CentralGamesPlatform.Models
                 Price = 10.00M,
                 Description = "Ride a bike through obstacles to get to the end",
                 CategoryId = 4,
-                ImageUrl = "\\images\\gameimages\\placeholder.jpg",
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = true
             });
@@ -84,7 +85,7 @@ namespace CentralGamesPlatform.Models
                 Price = 10.00M,
                 Description = "Stack blocks neatly to increase your score",
                 CategoryId = 5,
-                ImageUrl = "\\images\\gameimages\\placeholder.jpg",
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = true
             });
@@ -96,7 +97,7 @@ namespace CentralGamesPlatform.Models
                 Price = 0.00M,
                 Description = "Play Pool against your friends",
                 CategoryId = 6,
-                ImageUrl = "\\images\\gameimages\\placeholder.jpg",
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = true
             });
@@ -108,7 +109,7 @@ namespace CentralGamesPlatform.Models
                 Price = 60.00M,
                 Description = "Use weapons to defeat your enemies",
                 CategoryId = 7,
-                ImageUrl = "\\images\\gameimages\\placeholder.jpg",
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = true
             });
@@ -120,7 +121,7 @@ namespace CentralGamesPlatform.Models
                 Price = 5.00M,
                 Description = "Slice the falling fruit to increase your score",
                 CategoryId = 8,
-                ImageUrl = "\\images\\gameimages\\placeholder.jpg",
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = false
             });
@@ -132,7 +133,7 @@ namespace CentralGamesPlatform.Models
                 Price = 5.00M,
                 Description = "Defeat all enemies as the imposter to win",
                 CategoryId = 9,
-                ImageUrl = "\\images\\gameimages\\placeholder.jpg",
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = true
             });

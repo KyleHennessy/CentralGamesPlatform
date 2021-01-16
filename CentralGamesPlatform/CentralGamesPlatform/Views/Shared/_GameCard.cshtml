@@ -1,0 +1,16 @@
+﻿@model Game
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="img-thumbnail">
+        <img src="@Model.ImageThumbnailUrl" alt="image thumbnail" />
+        <div class="figure-caption">
+            <h3 class="float-sm-right">@Model.Price.ToString("c")</h3>
+            <h3><a asp-controller="Game" asp-action="Details" asp-route-id="@Model.GameId">@Model.Name</a></h3>
+            <h3>@Model.Description </h3>
+        </div>
+        <div class="addToCart">
+            <p class="button">
+                <a class="btn btn-success" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="@Model.GameId">Add to Cart</a> 
+            </p>
+        </div>
+    </div>
+</div>

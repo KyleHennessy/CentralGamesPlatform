@@ -29,5 +29,15 @@ namespace CentralGamesPlatform.Controllers
 			gameListViewModel.CurrentCategory = "Best Sellers";
 			return View(gameListViewModel);
 		}
+
+		public IActionResult Details(int id)
+		{
+			var game = _gameRepository.GetGameById(id);
+			if (game == null)
+				return NotFound();
+
+			return View(game);
+
+		}
 	}
 }

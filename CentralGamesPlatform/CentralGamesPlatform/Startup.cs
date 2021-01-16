@@ -29,6 +29,9 @@ namespace CentralGamesPlatform
             services.AddControllersWithViews();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IGameRepository,GameRepository>();
+            services.AddScoped<ShoppingCart>(sc => ShoppingCart.GetCart(sc));
+            services.AddHttpContextAccessor();
+            services.AddSession();
             services.AddDbContext<MyDatabaseContext>(options =>
                    // options.UseSqlite("Data Source=localdatabase.db"));
                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -50,6 +53,7 @@ namespace CentralGamesPlatform
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseRouting();
             app.UseAuthorization();
 
