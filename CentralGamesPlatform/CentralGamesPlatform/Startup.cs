@@ -16,13 +16,12 @@ using CentralGamesPlatform.Models;
 namespace CentralGamesPlatform
 {
     public class Startup
-    {
+    { 
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -32,7 +31,7 @@ namespace CentralGamesPlatform
             services.AddScoped<IGameRepository,GameRepository>();
             services.AddDbContext<MyDatabaseContext>(options =>
                    // options.UseSqlite("Data Source=localdatabase.db"));
-                   options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection")));
+                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

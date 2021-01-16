@@ -3,14 +3,16 @@ using CentralGamesPlatform.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CentralGamesPlatform.Migrations
 {
     [DbContext(typeof(MyDatabaseContext))]
-    partial class MyDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210116173504_SeedingDb")]
+    partial class SeedingDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,7 +211,7 @@ namespace CentralGamesPlatform.Migrations
                         new
                         {
                             GameId = 9,
-                            CategoryId = 9,
+                            CategoryId = 4,
                             Description = "Defeat all enemies as the imposter to win",
                             ImageThumbnailUrl = "~\\images\\gamethumbnails\\placeholder.gif",
                             ImageUrl = "~\\images\\gameimages\\placeholder.jpg",
