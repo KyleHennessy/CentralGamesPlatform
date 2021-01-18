@@ -19,15 +19,29 @@ namespace CentralGamesPlatform.Controllers
 			_categoryRepository = categoryRepository;
 		}
 
-		public IActionResult List()
+		public ViewResult List(string category)
 		{
-			//ViewBag.CurrentCategory = "Bestsellers";
-			//return View(_gameRepository.GetAllGames);
+			IEnumerable<Game> games;
+			string currentCategory;
+			//if category is null then current category is all games
+			if (string.IsNullOrEmpty(category))
+			{
+				games = _gameRepository.GetAllGames.OrderBy(g => g.GameId);
+				currentCategory = "All Games";
+			}
+			else
+			{
+				//find games that matches category name argument
+				games = _gameRepository.GetAllGames.Where(c => c.Category.CategoryName == category);
+				//find category that matches current category, with a null check that will display the category name
+				currentCategory = _categoryRepository.GetAllCategories.FirstOrDefault(currentCategory => currentCategory.CategoryName == category)?.CategoryName;		
+			}
 
-			var gameListViewModel = new GameListViewModel();
-			gameListViewModel.Games = _gameRepository.GetAllGames;
-			gameListViewModel.CurrentCategory = "Best Sellers";
-			return View(gameListViewModel);
+			return View(new GameListViewModel
+			{
+				Games = games,
+				CurrentCategory = currentCategory
+			});
 		}
 
 		public IActionResult Details(int id)

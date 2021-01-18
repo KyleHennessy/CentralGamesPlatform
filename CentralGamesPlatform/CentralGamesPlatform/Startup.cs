@@ -28,7 +28,8 @@ namespace CentralGamesPlatform
         {
             services.AddControllersWithViews();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IGameRepository,GameRepository>();
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ShoppingCart>(sc => ShoppingCart.GetCart(sc));
             services.AddHttpContextAccessor();
             services.AddSession();

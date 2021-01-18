@@ -40,9 +40,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="TestCasinoGame" asp-action="Index">Game</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Game" asp-action="List">List</a>
-                        </li>
+                        @await Component.InvokeAsync("CategoryMenu")
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+
                     </ul>
                 </div>
             </div>
@@ -58,7 +58,10 @@
         <div class="container">
             Icons made by <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
             &copy; 2019 - My TodoList App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a asp-area="" asp-controller="Contact" asp-action="Index">Contact</a>
+            
         </div>
+
     </footer>
 
     <environment include="Development">

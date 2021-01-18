@@ -29,4 +29,8 @@
             <td class="text-right">@Model.ShoppingCartTotal.ToString("c")</td>
         </tr>
     </tfoot>
-</table>  
+</table> 
+
+<div class="text-center">
+    <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Checkout</a>
+</div>
