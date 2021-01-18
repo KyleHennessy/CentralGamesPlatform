@@ -1,0 +1,22 @@
+﻿@model Order
+@{ 
+    ViewData["Title"] = "Payment";
+}
+<script src="https://js.stripe.com/v3/"></script>
+<script charset="utf-8">
+    var stripe = Stripe("pk_test_51IB0Z4BTwx1LYfRREoDEBBJOh4HQM4tCzZgvmqRqnutsLFWU2rzPvaUT0pa7vTVp5WqKMMPxyx1nFzeeLjW4o7Eo00umgSxWfI");
+</script>
+<div>
+    <form action="/Payment/Processing" method="post">
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_51IB0Z4BTwx1LYfRREoDEBBJOh4HQM4tCzZgvmqRqnutsLFWU2rzPvaUT0pa7vTVp5WqKMMPxyx1nFzeeLjW4o7Eo00umgSxWfI"
+                data-amount="@Model.OrderTotal"
+                data-name="Central Games Platform"
+                data-description="Entery payment details"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="en"
+                data-zip-code="true"
+                data-label="Pay">
+        </script>
+    </form>
+</div>

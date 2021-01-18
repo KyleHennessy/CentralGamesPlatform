@@ -26,7 +26,9 @@ namespace CentralGamesPlatform.Controllers
 		[HttpPost]
 		public IActionResult Checkout(Order order)
 		{
+			decimal total;
 			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
+			total = _shoppingCart.GetShoppingCartTotal();
 
 			if(_shoppingCart.ShoppingCartItems.Count == 0)
 			{
@@ -37,7 +39,8 @@ namespace CentralGamesPlatform.Controllers
 			{
 				_orderRepository.CreateOrder(order);
 				_shoppingCart.ClearCart();
-				return RedirectToAction("CheckoutComplete");
+				return RedirectToAction("Payment", "Index", total);
+				//return RedirectToAction("CheckoutComplete");
 			}
 
 			return View(order);

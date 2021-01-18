@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using CentralGamesPlatform.Models;
+using Stripe;
 
 namespace CentralGamesPlatform
 {
@@ -55,6 +56,7 @@ namespace CentralGamesPlatform
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
+            StripeConfiguration.SetApiKey(Configuration.GetConnectionString("StripeTestSecretKey"));
             app.UseRouting();
             app.UseAuthorization();
 
