@@ -8,69 +8,78 @@ using Stripe;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Elmah.Io.AspNetCore;
+using Stripe.Checkout;
 
 namespace CentralGamesPlatform.Controllers
 {
 	public class PaymentController : Controller
 	{
+		private readonly ShoppingCart _shoppingCart;
 		private readonly IOrderRepository _orderRepository;
 		private readonly string WebHookSecret = "whsec_s5NmxKzkSFLlmSiqnkJiMxLqnwM9QeOA";
-		public PaymentController(IOrderRepository orderRepository)
+		public PaymentController(IOrderRepository orderRepository, ShoppingCart shoppingCart)
 		{
 			_orderRepository = orderRepository;
+			_shoppingCart = shoppingCart;
+			StripeConfiguration.ApiKey = "sk_test_51IB0Z4BTwx1LYfRRop1pYWwRVKBAs0K7KZBRbKTubudFUXJPN5BlooRahipg8qIkpIQ49d6c4YZE9ErcziO23QtR00rzwq6cbk";
 		}
-		private decimal amount = 100.00M;
-		public IActionResult Index(decimal total, Models.Order order)
+		public IActionResult Index( Models.Order order, string total)
 		{
-			amount = total;
 			return View(order);
 		}
 
-		[HttpPost]
-		public IActionResult Processing(string stripeToken, string stripeEmail)
+		[HttpPost("create-checkout-session")]
+		public IActionResult CreateCheckoutSession(/*Models.Order order*/)
 		{
-			Dictionary<string, string> Metadata = new Dictionary<string, string>();
-			Metadata.Add("Product", "Game");
-			Metadata.Add("Quantity", "1");
-			var options = new ChargeCreateOptions
+			//Models.Order order = (Models.Order)TempData["order"];
+			decimal orderTotal;
+			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
+			orderTotal = _shoppingCart.GetShoppingCartTotal() * 100;
+			var options = new SessionCreateOptions
 			{
-				Amount = (long?)amount,
-				Currency = "EUR",
-				Description = "Buying 1 game",
-				Source = stripeToken,
-				ReceiptEmail = stripeEmail,
-				Metadata = Metadata
+				PaymentMethodTypes = new List<string>
+				{
+					"card"
+				},
+				LineItems = new List<SessionLineItemOptions>
+				{
+					new SessionLineItemOptions
+					{
+						PriceData = new SessionLineItemPriceDataOptions
+						{
+							UnitAmount = (long?)orderTotal,
+							Currency = "eur",
+							ProductData = new SessionLineItemPriceDataProductDataOptions
+							{
+								Name = "Order Total"
+							},
+
+						},
+						Quantity = 1
+					},
+				},
+				Mode = "payment",
+				SuccessUrl = "https://localhost:44394/Payment/Success",
+				CancelUrl = "https://localhost:44394/Payment/Failed",
 			};
-			var service = new ChargeService();
-			Charge charge = service.Create(options);
+			var service = new SessionService();
+			Session session = service.Create(options);
+			//_orderRepository.CreateOrder(order);
+			return Json(new { id = session.Id });
+			
+		}
+
+		public IActionResult Success(/*Models.Order order*/)
+		{
+			//_orderRepository.CreateOrder(order);
+			_shoppingCart.ClearCart();
 			return View();
 		}
-		[HttpPost]
-		public IActionResult ChargeChange()
-		{
-			var json = new StreamReader(HttpContext.Request.Body).ReadToEnd();
 
-			try
-			{
-				var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], WebHookSecret, throwOnApiVersionMismatch: true);
-				Charge charge = (Charge)stripeEvent.Data.Object;
-				switch (charge.Status)
-				{
-					case "succeeded":
-						charge.Metadata.TryGetValue("Product", out string Product);
-						charge.Metadata.TryGetValue("Quantity", out string Quantity);
-						break;
-					case "failed":
-						//TODO failed code
-						break;
-				}
-			}
-			catch(Exception e)
-			{
-				e.Ship(HttpContext);
-				return BadRequest();
-			}
-			return Ok();
+		public IActionResult Failed()
+		{
+			return View();
 		}
+
 	}
 }

@@ -1,22 +1,41 @@
 ﻿@model Order
-@{ 
+@{
     ViewData["Title"] = "Payment";
 }
 <script src="https://js.stripe.com/v3/"></script>
-<script charset="utf-8">
-    var stripe = Stripe("pk_test_51IB0Z4BTwx1LYfRREoDEBBJOh4HQM4tCzZgvmqRqnutsLFWU2rzPvaUT0pa7vTVp5WqKMMPxyx1nFzeeLjW4o7Eo00umgSxWfI");
+@*<script charset="utf-8">
+        var stripe = Stripe("pk_test_51IB0Z4BTwx1LYfRREoDEBBJOh4HQM4tCzZgvmqRqnutsLFWU2rzPvaUT0pa7vTVp5WqKMMPxyx1nFzeeLjW4o7Eo00umgSxWfI");
+    </script>*@
+
+<button type="button" id="checkout-button" asp-controller="Payment" asp-action="CreateCheckoutSession">Checkout</button>
+
+<script type="text/javascript">
+    // Create an instance of the Stripe object with your publishable API key
+    var stripe = Stripe('pk_test_51IB0Z4BTwx1LYfRREoDEBBJOh4HQM4tCzZgvmqRqnutsLFWU2rzPvaUT0pa7vTVp5WqKMMPxyx1nFzeeLjW4o7Eo00umgSxWfI');
+    var checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function () {
+        // Create a new Checkout Session using the server-side endpoint you
+        // created in step 3.
+        fetch('/create-checkout-session', {
+            method: 'POST',
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (session) {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(function (result) {
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, you should display the localized error message to your
+                // customer using `error.message`.
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    });
 </script>
-<div>
-    <form action="/Payment/Processing" method="post">
-        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="pk_test_51IB0Z4BTwx1LYfRREoDEBBJOh4HQM4tCzZgvmqRqnutsLFWU2rzPvaUT0pa7vTVp5WqKMMPxyx1nFzeeLjW4o7Eo00umgSxWfI"
-                data-amount="@Model.OrderTotal"
-                data-name="Central Games Platform"
-                data-description="Entery payment details"
-                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                data-locale="en"
-                data-zip-code="true"
-                data-label="Pay">
-        </script>
-    </form>
-</div>
