@@ -37,9 +37,8 @@ namespace CentralGamesPlatform.Controllers
 
 			if (ModelState.IsValid)
 			{
-				//TempData["Order"] = order;
 				_orderRepository.CreateOrder(order);
-				//_shoppingCart.ClearCart();
+				TempData["orderId"] = order.OrderId;
 				return RedirectToAction("Index", "Payment");
 				//return RedirectToAction("CheckoutComplete");
 			}

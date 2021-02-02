@@ -13,7 +13,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using CentralGamesPlatform.Models;
 using Stripe;
-using CentralGamesPlatform.Data;
 
 namespace CentralGamesPlatform
 {
@@ -30,7 +29,6 @@ namespace CentralGamesPlatform
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();

@@ -8,5 +8,6 @@ namespace CentralGamesPlatform.Models
 	public interface IOrderRepository
 	{
 		void CreateOrder(Order order);
+		void SuccessfulOrder(int orderId);
 	}
 }

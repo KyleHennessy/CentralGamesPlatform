@@ -65,15 +65,30 @@ namespace CentralGamesPlatform.Controllers
 			var service = new SessionService();
 			Session session = service.Create(options);
 			//_orderRepository.CreateOrder(order);
-			return Json(new { id = session.Id });
-			
+			return Json(new { id = session.Id });	
 		}
 
-		public IActionResult Success(/*Models.Order order*/)
+		public IActionResult Success()
 		{
-			//_orderRepository.CreateOrder(order);
-			_shoppingCart.ClearCart();
-			return View();
+			if(TempData["orderId"] == null)
+			{
+				return RedirectToAction("Failed");
+				//throw new NullReferenceException("order id cannot be null");
+			}
+
+			try
+			{
+				int orderId = (int)TempData["orderId"];
+				TempData.Clear();
+				_orderRepository.SuccessfulOrder(orderId);
+				_shoppingCart.ClearCart();
+				return View();
+			}
+
+			catch(Exception ex)
+			{
+				return View(ex.Message);
+			}
 		}
 
 		public IActionResult Failed()

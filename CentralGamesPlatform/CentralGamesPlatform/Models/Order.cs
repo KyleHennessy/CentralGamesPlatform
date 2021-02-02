@@ -50,5 +50,7 @@ namespace CentralGamesPlatform.Models
 		
 		[BindNever]
 		public DateTime OrderPlaced { get; set; }
+
+		public bool IsSuccessful { get; set; }
 	}
 }
