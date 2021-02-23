@@ -9,5 +9,8 @@ namespace CentralGamesPlatform.Models
 	{
 		void CreateOrder(Order order);
 		void SuccessfulOrder(int orderId);
+
+		Order GetOrder(int orderId);
+
 	}
 }

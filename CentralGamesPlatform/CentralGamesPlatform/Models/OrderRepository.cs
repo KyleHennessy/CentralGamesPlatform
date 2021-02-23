@@ -48,5 +48,12 @@ namespace CentralGamesPlatform.Models
 
 			_myDatabaseContext.SaveChanges();
 		}
+		public Order GetOrder(int orderId)
+		{
+			Order result = (from o in _myDatabaseContext.Orders
+							where o.OrderId == orderId
+							select o).SingleOrDefault();
+			return result;
+		}
 	}
 }

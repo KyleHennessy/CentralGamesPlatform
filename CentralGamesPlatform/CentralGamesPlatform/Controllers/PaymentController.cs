@@ -9,6 +9,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Elmah.Io.AspNetCore;
 using Stripe.Checkout;
+using Newtonsoft.Json;
 
 namespace CentralGamesPlatform.Controllers
 {
@@ -16,11 +17,15 @@ namespace CentralGamesPlatform.Controllers
 	{
 		private readonly ShoppingCart _shoppingCart;
 		private readonly IOrderRepository _orderRepository;
-		private readonly string WebHookSecret = "whsec_s5NmxKzkSFLlmSiqnkJiMxLqnwM9QeOA";
-		public PaymentController(IOrderRepository orderRepository, ShoppingCart shoppingCart)
+		private readonly IPaymentRepository _paymentRepository;
+		private readonly MyDatabaseContext _myDatabaseContext;
+		//private readonly string WebHookSecret = "whsec_s5NmxKzkSFLlmSiqnkJiMxLqnwM9QeOA";
+		public PaymentController(IOrderRepository orderRepository, ShoppingCart shoppingCart, IPaymentRepository paymentRepository, MyDatabaseContext myDatabaseContext)
 		{
 			_orderRepository = orderRepository;
 			_shoppingCart = shoppingCart;
+			_paymentRepository = paymentRepository;
+			_myDatabaseContext = myDatabaseContext;
 			StripeConfiguration.ApiKey = "sk_test_51IB0Z4BTwx1LYfRRop1pYWwRVKBAs0K7KZBRbKTubudFUXJPN5BlooRahipg8qIkpIQ49d6c4YZE9ErcziO23QtR00rzwq6cbk";
 		}
 		public IActionResult Index( Models.Order order, string total)
@@ -59,27 +64,31 @@ namespace CentralGamesPlatform.Controllers
 					},
 				},
 				Mode = "payment",
-				SuccessUrl = "https://localhost:44394/Payment/Success",
+				SuccessUrl = "https://localhost:44394/Payment/Success?session_id={CHECKOUT_SESSION_ID}",
 				CancelUrl = "https://localhost:44394/Payment/Failed",
 			};
 			var service = new SessionService();
 			Session session = service.Create(options);
-			//_orderRepository.CreateOrder(order);
 			return Json(new { id = session.Id });	
 		}
 
+		
 		public IActionResult Success()
 		{
 			if(TempData["orderId"] == null)
 			{
 				return RedirectToAction("Failed");
-				//throw new NullReferenceException("order id cannot be null");
 			}
-
 			try
 			{
 				int orderId = (int)TempData["orderId"];
+				string sessionId = HttpContext.Request.Query["session_id"];
 				TempData.Clear();
+				Payment payment = new Payment();
+				Models.Order order = _orderRepository.GetOrder(orderId);
+				decimal total = order.OrderTotal;
+				//decimal total = _orderRepository(orderId);
+				_paymentRepository.CreatePayment(sessionId, payment, orderId, total);
 				_orderRepository.SuccessfulOrder(orderId);
 				_shoppingCart.ClearCart();
 				return View();
