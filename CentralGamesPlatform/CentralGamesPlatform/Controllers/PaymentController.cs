@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Stripe;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using Elmah.Io.AspNetCore;
 using Stripe.Checkout;
 using Newtonsoft.Json;
 

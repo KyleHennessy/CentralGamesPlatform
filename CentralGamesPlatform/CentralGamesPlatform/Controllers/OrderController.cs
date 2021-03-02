@@ -1,4 +1,5 @@
 ﻿using CentralGamesPlatform.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CentralGamesPlatform.Controllers
 {
+	[Authorize]
 	public class OrderController : Controller
 	{
 		private readonly IOrderRepository _orderRepository;

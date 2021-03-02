@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CentralGamesPlatform.Models
 {
-    public class MyDatabaseContext : DbContext
+    public class MyDatabaseContext : IdentityDbContext<IdentityUser>
     {
         public MyDatabaseContext (DbContextOptions<MyDatabaseContext> options) : 
             base(options)

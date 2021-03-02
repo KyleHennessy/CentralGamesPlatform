@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using CentralGamesPlatform.Models;
 using Stripe;
+using Microsoft.AspNetCore.Identity;
 
 namespace CentralGamesPlatform
 {
@@ -28,6 +29,7 @@ namespace CentralGamesPlatform
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores <MyDatabaseContext>();
             services.AddControllersWithViews();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
@@ -36,6 +38,7 @@ namespace CentralGamesPlatform
             services.AddScoped<ShoppingCart>(sc => ShoppingCart.GetCart(sc));
             services.AddHttpContextAccessor();
             services.AddSession();
+            services.AddRazorPages();
             services.AddDbContext<MyDatabaseContext>(options =>
                    // options.UseSqlite("Data Source=localdatabase.db"));
                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -61,6 +64,7 @@ namespace CentralGamesPlatform
             app.UseSession();
             //StripeConfiguration.SetApiKey(Configuration.GetConnectionString("StripeTestSecretKey"));
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -69,6 +73,7 @@ namespace CentralGamesPlatform
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"
                     );
+                endpoints.MapRazorPages();
             });
         }
     }
