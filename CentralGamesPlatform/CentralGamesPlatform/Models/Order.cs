@@ -12,6 +12,8 @@ namespace CentralGamesPlatform.Models
 		[BindNever]
 		public int OrderId { get; set; }
 
+		public string UserId { get; set; }
+
 		[Required(ErrorMessage = "Required field")]
 		[Display(Name = "First Name")]
 		[StringLength(25)]

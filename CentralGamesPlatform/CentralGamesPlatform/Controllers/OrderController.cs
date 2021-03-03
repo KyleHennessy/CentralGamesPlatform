@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Principal;
+using System.Security.Claims;
 
 namespace CentralGamesPlatform.Controllers
 {
@@ -12,12 +15,14 @@ namespace CentralGamesPlatform.Controllers
 	public class OrderController : Controller
 	{
 		private readonly IOrderRepository _orderRepository;
+		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly ShoppingCart _shoppingCart;
 
-		public OrderController(IOrderRepository orderRepository, ShoppingCart shoppingCart)
+		public OrderController(IOrderRepository orderRepository, ShoppingCart shoppingCart, UserManager<ApplicationUser> userManager)
 		{
 			_orderRepository = orderRepository;
 			_shoppingCart = shoppingCart;
+			_userManager = userManager;
 		}
 
 		public IActionResult Checkout()
@@ -39,12 +44,13 @@ namespace CentralGamesPlatform.Controllers
 
 			if (ModelState.IsValid)
 			{
+				string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+				order.UserId = userId;
 				_orderRepository.CreateOrder(order);
 				TempData["orderId"] = order.OrderId;
 				return RedirectToAction("Index", "Payment");
-				//return RedirectToAction("CheckoutComplete");
 			}
-
+			
 			return View(order);
 		}
 

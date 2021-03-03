@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CentralGamesPlatform.Models
 {
-    public class MyDatabaseContext : IdentityDbContext<IdentityUser>
+    public class MyDatabaseContext : IdentityDbContext<ApplicationUser>
     {
         public MyDatabaseContext (DbContextOptions<MyDatabaseContext> options) : 
             base(options)
