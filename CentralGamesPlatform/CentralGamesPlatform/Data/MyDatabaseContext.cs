@@ -20,6 +20,7 @@ namespace CentralGamesPlatform.Models
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Licence> Licences { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

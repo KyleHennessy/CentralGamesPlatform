@@ -17,14 +17,20 @@ namespace CentralGamesPlatform.Controllers
 		private readonly ShoppingCart _shoppingCart;
 		private readonly IOrderRepository _orderRepository;
 		private readonly IPaymentRepository _paymentRepository;
+		private readonly IOrderDetailRepository _orderDetailRepository;
+		private readonly ILicenceRepository _licenseRepository;
 		private readonly MyDatabaseContext _myDatabaseContext;
 		//private readonly string WebHookSecret = "whsec_s5NmxKzkSFLlmSiqnkJiMxLqnwM9QeOA";
-		public PaymentController(IOrderRepository orderRepository, ShoppingCart shoppingCart, IPaymentRepository paymentRepository, MyDatabaseContext myDatabaseContext)
+		public PaymentController(IOrderRepository orderRepository, ShoppingCart shoppingCart, IPaymentRepository paymentRepository, 
+								 IOrderDetailRepository orderDetailRepository, ILicenceRepository licenseRepository, MyDatabaseContext myDatabaseContext)
 		{
 			_orderRepository = orderRepository;
 			_shoppingCart = shoppingCart;
 			_paymentRepository = paymentRepository;
+			_orderDetailRepository = orderDetailRepository;
+			_licenseRepository = licenseRepository;
 			_myDatabaseContext = myDatabaseContext;
+			
 			StripeConfiguration.ApiKey = "sk_test_51IB0Z4BTwx1LYfRRop1pYWwRVKBAs0K7KZBRbKTubudFUXJPN5BlooRahipg8qIkpIQ49d6c4YZE9ErcziO23QtR00rzwq6cbk";
 		}
 		public IActionResult Index( Models.Order order, string total)
@@ -86,9 +92,10 @@ namespace CentralGamesPlatform.Controllers
 				Payment payment = new Payment();
 				Models.Order order = _orderRepository.GetOrder(orderId);
 				decimal total = order.OrderTotal;
-				//decimal total = _orderRepository(orderId);
 				_paymentRepository.CreatePayment(sessionId, payment, orderId, total);
 				_orderRepository.SuccessfulOrder(orderId);
+				var orderDetails = _orderDetailRepository.GetAllOrderDetails(orderId);
+				_licenseRepository.CreateLicense(orderDetails);
 				_shoppingCart.ClearCart();
 				return View();
 			}

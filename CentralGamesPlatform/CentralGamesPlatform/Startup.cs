@@ -35,6 +35,8 @@ namespace CentralGamesPlatform
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<ILicenceRepository, LicenceRepository>();
             services.AddScoped<ShoppingCart>(sc => ShoppingCart.GetCart(sc));
             services.AddHttpContextAccessor();
             services.AddSession();

@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace CentralGamesPlatform.Models
 {
-	public class License
+	public class Licence
 	{
 		[BindNever]
-		public Guid LicenseId { get; set; }
+		public int LicenceId { get; set; }
+		public Guid LicenseKey { get; set; }
 		public int OrderDetailId { get; set; }
 	}
 }
