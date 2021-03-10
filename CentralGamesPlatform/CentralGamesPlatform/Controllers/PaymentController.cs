@@ -9,9 +9,12 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Stripe.Checkout;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace CentralGamesPlatform.Controllers
 {
+	[Authorize]
 	public class PaymentController : Controller
 	{
 		private readonly ShoppingCart _shoppingCart;
@@ -89,13 +92,14 @@ namespace CentralGamesPlatform.Controllers
 				int orderId = (int)TempData["orderId"];
 				string sessionId = HttpContext.Request.Query["session_id"];
 				TempData.Clear();
+				string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 				Payment payment = new Payment();
 				Models.Order order = _orderRepository.GetOrder(orderId);
 				decimal total = order.OrderTotal;
 				_paymentRepository.CreatePayment(sessionId, payment, orderId, total);
 				_orderRepository.SuccessfulOrder(orderId);
 				var orderDetails = _orderDetailRepository.GetAllOrderDetails(orderId);
-				_licenseRepository.CreateLicense(orderDetails);
+				_licenseRepository.CreateLicense(orderDetails, userId);
 				_shoppingCart.ClearCart();
 				return View();
 			}

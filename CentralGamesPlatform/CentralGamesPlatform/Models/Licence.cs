@@ -13,5 +13,6 @@ namespace CentralGamesPlatform.Models
 		public int LicenceId { get; set; }
 		public Guid LicenseKey { get; set; }
 		public int OrderDetailId { get; set; }
+		public string UserId { get; set; }
 	}
 }

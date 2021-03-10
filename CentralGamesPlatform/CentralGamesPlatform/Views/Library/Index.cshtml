@@ -1,5 +1,11 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model LibraryViewModel
+@{ 
+    ViewData["Title"] = "Library";
 }
+<h2>These are games that you currently own</h2>
+<div class="row">
+    @foreach (var game in Model.OwnedGames)
+    {
+        <partial name="_GameCard" model="game"/>
+    }
+</div>

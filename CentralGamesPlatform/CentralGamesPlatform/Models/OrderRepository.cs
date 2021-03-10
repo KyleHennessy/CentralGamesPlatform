@@ -55,5 +55,13 @@ namespace CentralGamesPlatform.Models
 							select o).SingleOrDefault();
 			return result;
 		}
-	}
+
+        public List<Order> GetUsersOrders(string userid)
+        {
+			var orders = (from o in _myDatabaseContext.Orders
+										 where o.UserId == userid
+										 select o).ToList();
+			return orders;
+        }
+    }
 }

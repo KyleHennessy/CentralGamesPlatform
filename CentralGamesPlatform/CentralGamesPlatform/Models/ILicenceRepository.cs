@@ -7,6 +7,7 @@ namespace CentralGamesPlatform.Models
 {
 	public interface ILicenceRepository
 	{
-		void CreateLicense(List<OrderDetail> orderDetails);
+		void CreateLicense(List<OrderDetail> orderDetails, string userId);
+		public IEnumerable<Licence> GetLicences(string userId);
 	}
 }

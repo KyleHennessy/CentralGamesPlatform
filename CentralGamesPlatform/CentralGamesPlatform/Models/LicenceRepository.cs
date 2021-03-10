@@ -12,7 +12,7 @@ namespace CentralGamesPlatform.Models
 		{
 			_myDatabaseContext = myDatabaseContext;
 		}
-		public void CreateLicense(List<OrderDetail> orderDetails)
+		public void CreateLicense(List<OrderDetail> orderDetails, string userId)
 		{
 			foreach (var orderDetail in orderDetails)
 			{
@@ -23,10 +23,19 @@ namespace CentralGamesPlatform.Models
 				var license = new Licence
 				{
 					LicenseKey = licenseKey,
-					OrderDetailId = orderDetailId
+					OrderDetailId = orderDetailId,
+					UserId = userId
 				};
 				_myDatabaseContext.Licences.Add(license);
 			}
 		}
-	}
+
+        public IEnumerable<Licence> GetLicences(string userId)
+        {
+			var licences = (from l in _myDatabaseContext.Licences
+							where l.UserId == userId
+							select l).ToList();
+			return licences;
+        }
+    }
 }

@@ -19,5 +19,10 @@ namespace CentralGamesPlatform.Models
 								select od).ToList();
 			return orderDetails;
 		}
-	}
+
+        public OrderDetail GetOrderDetailById(int orderDetailId)
+        {
+			return _myDatabaseContext.OrderDetails.FirstOrDefault(od => od.OrderDetailId == orderDetailId);
+        }
+    }
 }

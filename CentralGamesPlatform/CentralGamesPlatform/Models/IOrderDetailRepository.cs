@@ -8,5 +8,6 @@ namespace CentralGamesPlatform.Models
 	public interface IOrderDetailRepository
 	{
 		List<OrderDetail> GetAllOrderDetails(int orderId);
+		OrderDetail GetOrderDetailById(int orderDetailId);
 	}
 }
