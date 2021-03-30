@@ -21,11 +21,12 @@ namespace CentralGamesPlatform.Models
 		public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Licence> Licences { get; set; }
+        public DbSet<CasinoPass> CasinoPasses { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = -1, CategoryName = "Casino Pass"});
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 1, CategoryName = "Casino Game PC"});
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 2, CategoryName = "Casino Game Mobile" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 3, CategoryName = "Casino Game Both Device" });
@@ -35,6 +36,16 @@ namespace CentralGamesPlatform.Models
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 7, CategoryName = "Download Game PC" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 8, CategoryName = "Download Game Mobile" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 9, CategoryName = "Download Game Both Device" });
+
+            modelBuilder.Entity<Game>().HasData(new Game
+            {
+                GameId = -1,
+                Name = "Casino Pass",
+                Price = 5.00M,
+                Description = "Used to play casino games. One time use",
+                CategoryId = -1,
+                IsOnSale = false
+            });
 
             modelBuilder.Entity<Game>().HasData(new Game
             {

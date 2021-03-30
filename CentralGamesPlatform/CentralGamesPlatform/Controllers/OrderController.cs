@@ -15,14 +15,17 @@ namespace CentralGamesPlatform.Controllers
 	public class OrderController : Controller
 	{
 		private readonly IOrderRepository _orderRepository;
+		private readonly ICasinoPassRepository _casinoPassRepository;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly ShoppingCart _shoppingCart;
 
-		public OrderController(IOrderRepository orderRepository, ShoppingCart shoppingCart, UserManager<ApplicationUser> userManager)
+		public OrderController(IOrderRepository orderRepository, ICasinoPassRepository casinoPassRepository,
+							   ShoppingCart shoppingCart, UserManager<ApplicationUser> userManager )
 		{
 			_orderRepository = orderRepository;
+			_casinoPassRepository = casinoPassRepository;
 			_shoppingCart = shoppingCart;
-			_userManager = userManager;
+			_userManager = userManager;	
 		}
 
 		public IActionResult Checkout()

@@ -4,14 +4,16 @@ using CentralGamesPlatform.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CentralGamesPlatform.Migrations
 {
     [DbContext(typeof(MyDatabaseContext))]
-    partial class MyDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210330175204_AddingCasinoPasses")]
+    partial class AddingCasinoPasses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,11 +135,6 @@ namespace CentralGamesPlatform.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryId = -1,
-                            CategoryName = "Casino Pass"
-                        },
-                        new
-                        {
                             CategoryId = 1,
                             CategoryName = "Casino Game PC"
                         },
@@ -218,15 +215,6 @@ namespace CentralGamesPlatform.Migrations
                     b.ToTable("Games");
 
                     b.HasData(
-                        new
-                        {
-                            GameId = -1,
-                            CategoryId = -1,
-                            Description = "Used to play casino games. One time use",
-                            IsOnSale = false,
-                            Name = "Casino Pass",
-                            Price = 5.00m
-                        },
                         new
                         {
                             GameId = 1,

@@ -33,7 +33,6 @@ namespace CentralGamesPlatform.Controllers
 			{
 				//find games that matches category name argument
 				games = _gameRepository.GetAllGames.Where(c => c.Category.CategoryName == category);
-				//find category that matches current category, with a null check that will display the category name
 				currentCategory = _categoryRepository.GetAllCategories.FirstOrDefault(currentCategory => currentCategory.CategoryName == category)?.CategoryName;		
 			}
 

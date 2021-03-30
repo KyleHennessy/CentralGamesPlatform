@@ -22,16 +22,19 @@ namespace CentralGamesPlatform.Controllers
 		private readonly IPaymentRepository _paymentRepository;
 		private readonly IOrderDetailRepository _orderDetailRepository;
 		private readonly ILicenceRepository _licenseRepository;
+		private readonly ICasinoPassRepository _casinoPassRepository;
 		private readonly MyDatabaseContext _myDatabaseContext;
 		//private readonly string WebHookSecret = "whsec_s5NmxKzkSFLlmSiqnkJiMxLqnwM9QeOA";
 		public PaymentController(IOrderRepository orderRepository, ShoppingCart shoppingCart, IPaymentRepository paymentRepository, 
-								 IOrderDetailRepository orderDetailRepository, ILicenceRepository licenseRepository, MyDatabaseContext myDatabaseContext)
+								 IOrderDetailRepository orderDetailRepository, ILicenceRepository licenseRepository, 
+								 ICasinoPassRepository casinoPassRepository, MyDatabaseContext myDatabaseContext)
 		{
 			_orderRepository = orderRepository;
 			_shoppingCart = shoppingCart;
 			_paymentRepository = paymentRepository;
 			_orderDetailRepository = orderDetailRepository;
 			_licenseRepository = licenseRepository;
+			_casinoPassRepository = casinoPassRepository;
 			_myDatabaseContext = myDatabaseContext;
 			
 			StripeConfiguration.ApiKey = "sk_test_51IB0Z4BTwx1LYfRRop1pYWwRVKBAs0K7KZBRbKTubudFUXJPN5BlooRahipg8qIkpIQ49d6c4YZE9ErcziO23QtR00rzwq6cbk";
@@ -93,13 +96,30 @@ namespace CentralGamesPlatform.Controllers
 				string sessionId = HttpContext.Request.Query["session_id"];
 				TempData.Clear();
 				string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+				//Create payment object in database
 				Payment payment = new Payment();
 				Models.Order order = _orderRepository.GetOrder(orderId);
 				decimal total = order.OrderTotal;
 				_paymentRepository.CreatePayment(sessionId, payment, orderId, total);
+				//Update order to be sucessful
 				_orderRepository.SuccessfulOrder(orderId);
+				//Generate License keys for each game/pass purchased
 				var orderDetails = _orderDetailRepository.GetAllOrderDetails(orderId);
 				_licenseRepository.CreateLicense(orderDetails, userId);
+				//If pass was purchased then create pass in database
+				foreach (var orderDetail in orderDetails)
+				{
+					if (orderDetail.GameId == -1)
+                    {
+						CasinoPass casinoPass = new CasinoPass
+						{
+							UserId = userId,
+							Active = false,
+							Expired = false
+						};
+						_casinoPassRepository.CreateCasinoPass(casinoPass);
+					}
+				}
 				_shoppingCart.ClearCart();
 				return View();
 			}

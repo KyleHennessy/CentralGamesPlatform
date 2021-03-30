@@ -13,15 +13,16 @@ namespace CentralGamesPlatform.Controllers
 	{
         private readonly IGameRepository _gameRepository;
         private readonly ILicenceRepository _licenceRepository;
-        private readonly IOrderRepository _orderRepository;
+        
         private readonly IOrderDetailRepository _orderDetailRepository;
+        private readonly ICasinoPassRepository _casinoPassRepository;
         public LibraryController(IGameRepository gameRepository, ILicenceRepository licenceRepository, 
-                                 IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository)
+                                 IOrderDetailRepository orderDetailRepository, ICasinoPassRepository casinoPassRepository)
         {
             _gameRepository = gameRepository;
             _licenceRepository = licenceRepository;
-            _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
+            _casinoPassRepository = casinoPassRepository;
         }
 
         public IActionResult Index()
@@ -36,7 +37,6 @@ namespace CentralGamesPlatform.Controllers
             List<OrderDetail> orderDetails = new List<OrderDetail>();
             for(int i = 0; i < orderDetailIds.Count(); i++)
             {
-                //int id = orderDetailIds[i];
                 orderDetails.Add(_orderDetailRepository.GetOrderDetailById(orderDetailIds[i]));
             }
             List<Game> ownedGames = new List<Game>();
@@ -44,9 +44,25 @@ namespace CentralGamesPlatform.Controllers
             {
                 ownedGames.Add(_gameRepository.GetGameById(orderDetail.GameId));
             }
+            var usersPasses = _casinoPassRepository.GetCasinoPassesByUserId(userId);
+            List<CasinoPass> ownedPasses = new List<CasinoPass>();
+            List<Game> activeCasinoGames = new List<Game>();
+            foreach(var pass in usersPasses)
+            {
+                if(pass.Active == false && pass.Expired == false)
+                {
+                    ownedPasses.Add(pass);
+                }
+                else if(pass.Active == true && pass.Expired == false)
+                {
+                    activeCasinoGames.Add(_gameRepository.GetGameById(pass.GameId));
+                }
+            }
             var libraryViewModel = new LibraryViewModel
             {
-                OwnedGames = ownedGames
+                OwnedGames = ownedGames,
+                OwnedPasses = ownedPasses,
+                ActiveCasinoGames = activeCasinoGames
             };
             return View(libraryViewModel);
         }

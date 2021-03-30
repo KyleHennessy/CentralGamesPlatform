@@ -10,6 +10,7 @@ namespace CentralGamesPlatform.Models
 		public int OrderDetailId { get; set; }
 		public int OrderId { get; set; }
 		public int GameId { get; set; }
+		public bool CasinoPass { get; set; }
 		public Game Game { get; set; }
 		public int Amount { get; set; }
 		public decimal Price { get; set; }

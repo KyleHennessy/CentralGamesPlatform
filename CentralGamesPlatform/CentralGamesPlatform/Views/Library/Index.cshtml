@@ -2,6 +2,22 @@
 @{ 
     ViewData["Title"] = "Library";
 }
+@if(Model.OwnedPasses.Any())
+{
+    <h2>You currently own @Model.OwnedPasses.Count() casino game passes. These can be used only once on any casino game</h2>
+
+    @if (Model.ActiveCasinoGames.Any())
+    {
+        <h2>You currently have active passes in the following games:</h2>
+        <div class="row">
+            @foreach (var cg in Model.ActiveCasinoGames)
+            {
+                <partial name="_GameCard" model="cg"/>
+            }
+        </div>
+    }
+
+}
 <h2>These are games that you currently own</h2>
 <div class="row">
     @foreach (var game in Model.OwnedGames)

@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20210303155330_ExtendIdentityUser.Designer.cs" />
     <Compile Remove="Migrations\20210303155716_ExtendIdentityUser.cs" />
     <Compile Remove="Migrations\20210303155716_ExtendIdentityUser.Designer.cs" />
+    <Compile Remove="Migrations\20210330175457_CasinoPassInGames.cs" />
+    <Compile Remove="Migrations\20210330175457_CasinoPassInGames.Designer.cs" />
   </ItemGroup>
 
 
@@ -30,6 +32,12 @@
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.1.12" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="Stripe.net" Version="39.39.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Areas\CoinFlip\Models\" />
+    <Folder Include="Areas\CoinFlip\Views\" />
   </ItemGroup>
 
 </Project>

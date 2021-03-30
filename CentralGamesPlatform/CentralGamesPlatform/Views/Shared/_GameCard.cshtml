@@ -7,10 +7,19 @@
             <h3><a asp-controller="Game" asp-action="Details" asp-route-id="@Model.GameId">@Model.Name</a></h3>
             <h3>@Model.Description </h3>
         </div>
+        @if (Model.CategoryId >= 1 && Model.CategoryId <= 3)
+        {
+            <div class="startCasinoGame">
+                <a class="btn btn-success" asp-controller="Start" asp-action="Index" asp-route-gameId="@Model.GameId">Start Game</a>
+            </div>
+        }
+        else
+        {
         <div class="addToCart">
             <p class="button">
                 <a class="btn btn-success" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="@Model.GameId">Add to Cart</a> 
             </p>
         </div>
+        }
     </div>
 </div>
