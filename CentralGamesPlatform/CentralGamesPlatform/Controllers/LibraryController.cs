@@ -6,9 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using CentralGamesPlatform.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CentralGamesPlatform.Controllers
 {
+    [Authorize]
 	public class LibraryController : Controller
 	{
         private readonly IGameRepository _gameRepository;
@@ -44,6 +46,7 @@ namespace CentralGamesPlatform.Controllers
             {
                 ownedGames.Add(_gameRepository.GetGameById(orderDetail.GameId));
             }
+            ownedGames.RemoveAll(og => og.GameId == -1);
             var usersPasses = _casinoPassRepository.GetCasinoPassesByUserId(userId);
             List<CasinoPass> ownedPasses = new List<CasinoPass>();
             List<Game> activeCasinoGames = new List<Game>();

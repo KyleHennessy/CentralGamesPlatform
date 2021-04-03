@@ -4,14 +4,16 @@ using CentralGamesPlatform.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CentralGamesPlatform.Migrations
 {
     [DbContext(typeof(MyDatabaseContext))]
-    partial class MyDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210402221312_CasinoPassImages")]
+    partial class CasinoPassImages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,30 +477,6 @@ namespace CentralGamesPlatform.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("CentralGamesPlatform.Models.Result", b =>
-                {
-                    b.Property<int>("ResultId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("AmountWon")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("CasinoPassId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateResultPlaced")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Win")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ResultId");
-
-                    b.ToTable("Results");
-                });
-
             modelBuilder.Entity("CentralGamesPlatform.Models.ShoppingCartItem", b =>
                 {
                     b.Property<int>("ShoppingCartItemId")
@@ -520,24 +498,6 @@ namespace CentralGamesPlatform.Migrations
                     b.HasIndex("GameId");
 
                     b.ToTable("ShoppingCartItems");
-                });
-
-            modelBuilder.Entity("CentralGamesPlatform.Models.Wallet", b =>
-                {
-                    b.Property<int>("WalletId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("WalletId");
-
-                    b.ToTable("Wallets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

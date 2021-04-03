@@ -22,6 +22,8 @@ namespace CentralGamesPlatform.Models
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Licence> Licences { get; set; }
         public DbSet<CasinoPass> CasinoPasses { get; set; }
+        public DbSet<Result> Results { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -44,6 +46,8 @@ namespace CentralGamesPlatform.Models
                 Price = 5.00M,
                 Description = "Used to play casino games. One time use",
                 CategoryId = -1,
+                ImageUrl = "\\images\\gameimages\\pokerLarge.jpg",
+                ImageThumbnailUrl = "\\images\\gamethumbnails\\poker.jpg",
                 IsOnSale = false
             });
 
@@ -150,6 +154,18 @@ namespace CentralGamesPlatform.Models
                 Price = 5.00M,
                 Description = "Defeat all enemies as the imposter to win",
                 CategoryId = 9,
+                ImageUrl = "\\images\\gameimages\\placeholder.png",
+                ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
+                IsOnSale = true
+            });
+
+            modelBuilder.Entity<Game>().HasData(new Game
+            {
+                GameId = 10,
+                Name = "Coin flip",
+                Price = 5.00M,
+                Description = "Flip a coin for the chance of doubling your money",
+                CategoryId = 1,
                 ImageUrl = "\\images\\gameimages\\placeholder.png",
                 ImageThumbnailUrl = "\\images\\gamethumbnails\\placeholder.gif",
                 IsOnSale = true

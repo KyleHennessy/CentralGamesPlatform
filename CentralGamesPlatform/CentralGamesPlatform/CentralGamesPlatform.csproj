@@ -36,8 +36,8 @@
 
 
   <ItemGroup>
+    <Folder Include="Areas\CoinFlip\Data\" />
     <Folder Include="Areas\CoinFlip\Models\" />
-    <Folder Include="Areas\CoinFlip\Views\" />
   </ItemGroup>
 
 </Project>

@@ -12,7 +12,7 @@
     @if (Model.CategoryId >= 1 && Model.CategoryId <= 3)
     {
         <div class="startCasinoGame">
-            <a class="btn btn-success" asp-controller="Start" asp-action="Index" asp-route-gameId="@Model.GameId">Start Game</a>
+            <a class="btn btn-success" asp-controller="Start" asp-action="GiveAccessToCasinoGame" asp-route-gameId="@Model.GameId">Start Game</a>
         </div>
     }
     else

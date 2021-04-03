@@ -38,6 +38,8 @@ namespace CentralGamesPlatform
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
             services.AddScoped<ILicenceRepository, LicenceRepository>();
             services.AddScoped<ICasinoPassRepository, CasinoPassRepository>();
+            services.AddScoped<IResultRepository, ResultRepository>();
+            services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<ShoppingCart>(sc => ShoppingCart.GetCart(sc));
             services.AddHttpContextAccessor();
             services.AddSession();
@@ -72,6 +74,10 @@ namespace CentralGamesPlatform
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name:"areas",
+                    pattern:"{area:exists}/{controller=Play}/{action=Index}/{id?}"
+                    );
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"

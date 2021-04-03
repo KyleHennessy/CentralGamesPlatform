@@ -21,17 +21,29 @@ namespace CentralGamesPlatform.Models
 
         public void ActivateCasinoPass(Guid casinoPassId, int gameId)
         {
-            throw new NotImplementedException();
+            CasinoPass pass = (from p in _myDatabaseContext.CasinoPasses
+                               where p.CasinoPassId == casinoPassId select p).Single();
+            pass.Active = true;
+            pass.GameId = gameId;
+            _myDatabaseContext.SaveChanges();
         }
 
         public void ExpireCasinoPass(Guid casinoPassId)
         {
-            throw new NotImplementedException();
+            CasinoPass pass = (from p in _myDatabaseContext.CasinoPasses
+                               where p.CasinoPassId == casinoPassId
+                               select p).Single();
+            pass.Active = false;
+            pass.Expired = true;
+            _myDatabaseContext.SaveChanges();
         }
 
         public CasinoPass GetCasinoPass(Guid casinoPassId)
         {
-            throw new NotImplementedException();
+            CasinoPass pass = (from p in _myDatabaseContext.CasinoPasses
+                               where p.CasinoPassId == casinoPassId
+                               select p).SingleOrDefault();
+            return pass;
         }
 
         public IEnumerable<CasinoPass> GetCasinoPassesByUserId(string userId)
