@@ -36,17 +36,18 @@ namespace CentralGamesPlatform.Controllers
                                             .Where(p => p.Expired == false)
                                             .Where(p => p.GameId == 0)
                                             .FirstOrDefault();
-                //if no valid passes owned
+                //if no valid passes owned redirect to game pass page
                 if (firstValidPass == null)
                 {
                     return RedirectToAction("Details", "Game", new { id = -1 });
                 }
-                //activate pass and assign game to pass
+                //activate pass and assign game to pass, redirect to game library
                 else
                 {
                     Guid casinoPassId = firstValidPass.CasinoPassId;
                     _casinoPassRepository.ActivateCasinoPass(casinoPassId, gameId);
-                    return RedirectToAction("Index", "Play", new { area = "CoinFlip", passId = casinoPassId });
+                    //return RedirectToAction("Index", "Play", new { area = "CoinFlip", passId = casinoPassId });
+                    return RedirectToAction("Index", "Library");
                 }
             }
         }

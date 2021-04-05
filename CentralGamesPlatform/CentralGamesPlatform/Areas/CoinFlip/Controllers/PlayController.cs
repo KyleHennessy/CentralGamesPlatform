@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CentralGamesPlatform.Areas.CoinFlip.Controllers
@@ -14,10 +15,13 @@ namespace CentralGamesPlatform.Areas.CoinFlip.Controllers
     {
         private readonly ICasinoPassRepository _casinoPassRepository;
         private readonly IResultRepository _resultRepostiory;
-        public PlayController(ICasinoPassRepository casinoPassRepository, IResultRepository resultRepository)
+        private readonly IWalletRepository _walletRepository;
+        public PlayController(ICasinoPassRepository casinoPassRepository, IResultRepository resultRepository,
+                              IWalletRepository walletRepository)
         {
             _casinoPassRepository = casinoPassRepository;
             _resultRepostiory = resultRepository;
+            _walletRepository = walletRepository;
         }
         public IActionResult Index(Guid casinoPassId)
         {
@@ -52,8 +56,16 @@ namespace CentralGamesPlatform.Areas.CoinFlip.Controllers
                 result.Win = false;
                 result.CasinoPassId = casinoPass.CasinoPassId;
                 result.AmountWon = 0.00M;
-                _resultRepostiory.CreateResult(result);
-                _casinoPassRepository.ExpireCasinoPass(casinoPass.CasinoPassId);
+                if (casinoPass.Expired == false && casinoPass.Active == true && casinoPass.GameId == 1)
+                {
+                    _resultRepostiory.CreateResult(result);
+                    _casinoPassRepository.ExpireCasinoPass(casinoPass.CasinoPassId);
+                    
+                }
+                else
+                {
+                    RedirectToAction("Index", "Home", new { area = "" });
+                }
                 return View("Loss");
             }
             else
@@ -62,8 +74,20 @@ namespace CentralGamesPlatform.Areas.CoinFlip.Controllers
                 result.Win = true;
                 result.CasinoPassId = casinoPass.CasinoPassId;
                 result.AmountWon = 10.00M;
-                _resultRepostiory.CreateResult(result);
-                _casinoPassRepository.ExpireCasinoPass(casinoPass.CasinoPassId);
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                
+                
+                if (casinoPass.Expired == false && casinoPass.Active == true && casinoPass.GameId == 1)
+                {
+                    _resultRepostiory.CreateResult(result);
+                    _walletRepository.AddToWallet(userId, result.AmountWon);
+                    _casinoPassRepository.ExpireCasinoPass(casinoPass.CasinoPassId);
+                    
+                }
+                else
+                {
+                    RedirectToAction("Index", "Home", new { area = "" });
+                }
                 return View("Win");
             }
         }

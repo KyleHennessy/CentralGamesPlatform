@@ -1,0 +1,8 @@
+﻿@model WalletViewModel
+
+@if (Model.WalletBalance > 0.00M)
+{
+<li class="nav-item" style="margin-left:20px;">
+    <a id="winnings" class="nav-link text-dark" asp-controller="Payout" asp-action="Index"> Winnings: €@Model.WalletBalance</a>
+</li>
+}

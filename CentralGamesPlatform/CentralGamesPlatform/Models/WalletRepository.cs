@@ -23,19 +23,41 @@ namespace CentralGamesPlatform.Models
                 newWallet.UserId = userId;
                 newWallet.Balance = 0.00M;
                 _myDatabaseContext.Wallets.Add(newWallet);
+                decimal result = newWallet.Balance + amountToAdd;
+                newWallet.Balance = result;
+                _myDatabaseContext.SaveChanges();
             }
-            decimal result = wallet.Balance + amountToAdd;
+            else
+            {
+                decimal result = wallet.Balance + amountToAdd;
+                wallet.Balance = result;
+                _myDatabaseContext.SaveChanges();
+            }
 
         }
 
         public decimal RetrieveBalance(string userId)
         {
-            throw new NotImplementedException();
+            Wallet wallet = (from w in _myDatabaseContext.Wallets
+                             where w.UserId == userId
+                             select w).SingleOrDefault();
+            if (wallet == null)
+            {
+                return 0.00M;
+            }
+            decimal result = wallet.Balance;
+            return result;
         }
 
         public void SubtractFromWallet(string userId, decimal amountToSubtract)
         {
-            throw new NotImplementedException();
+            Wallet wallet = (from w in _myDatabaseContext.Wallets
+                             where w.UserId == userId
+                             select w).SingleOrDefault();
+ 
+            decimal result = wallet.Balance - amountToSubtract;
+            wallet.Balance = result;
+            _myDatabaseContext.SaveChanges();
         }
     }
 }
