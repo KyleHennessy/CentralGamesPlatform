@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20210303155716_ExtendIdentityUser.Designer.cs" />
     <Compile Remove="Migrations\20210330175457_CasinoPassInGames.cs" />
     <Compile Remove="Migrations\20210330175457_CasinoPassInGames.Designer.cs" />
+    <Compile Remove="Migrations\20210406181008_AddingPayouts.cs" />
+    <Compile Remove="Migrations\20210406181008_AddingPayouts.Designer.cs" />
   </ItemGroup>
 
 
@@ -31,6 +33,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.12" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.1.12" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="PayoutsSdk" Version="1.1.0" />
     <PackageReference Include="Stripe.net" Version="39.39.0" />
   </ItemGroup>
 

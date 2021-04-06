@@ -24,6 +24,7 @@ namespace CentralGamesPlatform.Models
         public DbSet<CasinoPass> CasinoPasses { get; set; }
         public DbSet<Result> Results { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<Payout> Payouts { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

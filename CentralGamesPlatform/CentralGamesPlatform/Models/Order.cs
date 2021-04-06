@@ -43,6 +43,7 @@ namespace CentralGamesPlatform.Models
 
 		[Required(ErrorMessage = "Required field")]
 		[DataType(DataType.PhoneNumber)]
+		[Phone]
 		public string PhoneNumber { get; set; }
 
 		public List<OrderDetail> OrderDetails { get; set; }

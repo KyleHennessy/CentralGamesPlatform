@@ -11,6 +11,5 @@ namespace CentralGamesPlatform.Models
 		public string CategoryName { get; set; }
 		public string CategoryDescription { get; set; }
 		public List<Game> Games { get; set; }
-
 	}
 }

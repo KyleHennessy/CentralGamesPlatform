@@ -1,7 +1,31 @@
-﻿@model Payout
+﻿@model Payout 
+@if(ViewBag.SuccessMessage != null)
+{
+    <p class="text-success">@ViewBag.SuccessMessage</p>
+}
+@if(ViewBag.ErrorMessage != null)
+{
+    <p class="text-danger">@ViewBag.ErrorMessage</p>
+}
+<h1>Transfer winnings to PayPal</h1>
+<p>To convert your winnings into real world cash, you must have an active PayPal account. If you do not have one, please register for one at <a href="www.paypal.com">this link here</a></p>
 
-<h1>Transfer winnings to your bank account</h1>
-<p>To transfer winnings to your bank account, you must create a stripe connect <a asp-action="CreateAccount">by clicking here</a></p>
+<h3>If you already have an account, enter your PayPal email and the amount you want to transfer and click 'Transfer'</h3>
+<form asp-action="Index" method="post">
+    <h4>Purchase</h4>
 
-<h3>Or if you already have an account, click proceed below</h3>
-<button class="btn btn-primary" value="Proceed" asp-controller="Payout" asp-action="CreateTransfer">Proceed</button>
+    <div class="form-group">
+        <label asp-for="PayPalEmail"></label>
+        <input asp-for="PayPalEmail" class="form-control" />
+        <span asp-validation-for="PayPalEmail" class="bg-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AmountTransfered"></label>
+        <input asp-for="AmountTransfered" class="form-control" />
+        <span asp-validation-for="AmountTransfered" class="bg-danger"></span>
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Complete Order" />
+    @*<button type="submit" class="btn btn-primary" value="Complete Order" asp-controller="Payment" asp-action="Index">Proceed</button>*@
+</form>
