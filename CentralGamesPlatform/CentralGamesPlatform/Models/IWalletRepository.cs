@@ -10,5 +10,6 @@ namespace CentralGamesPlatform.Models
         void AddToWallet(string userId, decimal amountToAdd);
         void SubtractFromWallet(string userId, decimal amountToSubtract);
         decimal RetrieveBalance(string userId);
+        int RetrieveWalletId(string userId);
     }
 }

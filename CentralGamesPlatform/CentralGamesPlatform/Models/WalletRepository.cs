@@ -49,6 +49,19 @@ namespace CentralGamesPlatform.Models
             return result;
         }
 
+        public int RetrieveWalletId(string userId)
+        {
+            Wallet wallet = (from w in _myDatabaseContext.Wallets
+                             where w.UserId == userId
+                             select w).SingleOrDefault();
+            if (wallet == null)
+            {
+                return 0;
+            }
+            int result = wallet.WalletId;
+            return result;
+        }
+
         public void SubtractFromWallet(string userId, decimal amountToSubtract)
         {
             Wallet wallet = (from w in _myDatabaseContext.Wallets

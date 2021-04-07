@@ -36,19 +36,27 @@ namespace CentralGamesPlatform.Controllers
         {
 			string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 			decimal walletBalance = _walletRepository.RetrieveBalance(userId);
-			if(submittedPayout.AmountTransfered < walletBalance)
+			int walletId = _walletRepository.RetrieveWalletId(userId);
+			if (walletId == 0)
+            {
+				ViewBag.ErrorMessage = "You have never won any money in a casino game before. Come back here when you have";
+				return View();
+            }
+			submittedPayout.WalletId = walletId;
+			if(submittedPayout.AmountTransfered < walletBalance && submittedPayout.AmountTransfered >= 5.00M)
             {
 				string amountTransfered = submittedPayout.AmountTransfered.ToString();
 				string email = submittedPayout.PayPalEmail;
-				//var response = CreatePayout(amountTransfered, email, false);
-				//HttpResponse createPayoutResponse = response.Result;
-				//var payout = createPayoutResponse.Result<CreatePayoutResponse>();
 				var response = CreatePayout(amountTransfered, email);
 				HttpResponse createPayoutResponse = response.Result;
 				var payout = createPayoutResponse.Result<CreatePayoutResponse>();
-				var getResponse = GetPayout(payout.BatchHeader.PayoutBatchId, true);
-				HttpResponse getPayoutResponse = getResponse.Result;
-				var payoutBatch = getPayoutResponse.Result<PayoutBatch>();
+
+				//var getResponse = GetPayout(payout.BatchHeader.PayoutBatchId, true);
+				//HttpResponse getPayoutResponse = getResponse.Result;
+				//var payoutBatch = getPayoutResponse.Result<PayoutBatch>();
+		
+				//GetPayoutItem(payoutBatch.Items[0].PayoutItemId, true).Wait();
+
 				submittedPayout.PayPalBatchId = payout.BatchHeader.PayoutBatchId;
 				//_walletRepository.SubtractFromWallet(userId, submittedPayout.AmountTransfered);
 				_payoutRepository.CreatePayout(submittedPayout);
@@ -76,7 +84,7 @@ namespace CentralGamesPlatform.Controllers
 						RecipientType="EMAIL",
 
 						Amount=new Currency(){
-							CurrencyCode="USD",
+							CurrencyCode="EUR",
 							Value=amountTransfered,
 						 },
 						Receiver=email,
@@ -89,8 +97,6 @@ namespace CentralGamesPlatform.Controllers
 		}
 		public async static Task<HttpResponse> CreatePayout(string amountTransfered, string email)
 		{
-			Console.WriteLine("Creating payout with complete payload");
-
 			try
 			{
 				PayoutsPostRequest request = new PayoutsPostRequest();
@@ -98,6 +104,46 @@ namespace CentralGamesPlatform.Controllers
 				var response = await PayPalClient.client().Execute(request);
 				var result = response.Result<CreatePayoutResponse>();
 				return response;
+			}
+			catch (HttpException ex)
+			{
+				return null;
+			}
+		}
+
+		public async static Task<HttpResponse> GetPayout(string batchId,bool debug = false)
+        {
+            //try
+            //{
+				PayoutsGetRequest request = new PayoutsGetRequest(batchId);
+				var getResponse = await PayPalClient.client().Execute(request);
+				var result = getResponse.Result<PayoutBatch>();
+                if (debug)
+                {
+					//do something
+                }
+				return getResponse;
+
+            //}
+			//catch (HttpException ex)
+            //{
+			//	return null;
+            //}
+        }
+
+		public async static Task<HttpResponse> GetPayoutItem(string itemId, bool debug = false)
+        {
+			try
+			{
+				PayoutsItemGetRequest request = new PayoutsItemGetRequest(itemId);
+				var getResponse = await PayPalClient.client().Execute(request);
+				var result = getResponse.Result<PayoutItemResponse>();
+				if (debug)
+				{
+					//do something
+
+				}
+				return getResponse;
 			}
 			catch (HttpException ex)
 			{
