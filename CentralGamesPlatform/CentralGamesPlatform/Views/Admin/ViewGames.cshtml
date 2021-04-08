@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Game>
+
+@{ 
+    ViewData["Title"] = "ViewGames";
+}
+
+<h2>View All Games</h2>
+<h3>Click on a game to edit its details</h3>
+<p>
+    <a asp-action="AddGame">Add Game</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="ViewGames" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.Name)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                <a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CategoryIdSortParam"]">@Html.DisplayNameFor(model => model.CategoryId)</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        €@Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryId)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-gameId="@item.GameId">Edit</a>
+                        <a asp-action="Details" asp-route-gameId="@item.GameId">Details</a>
+                        <a asp-action="Delete" asp-route-gameId="@item.GameId">Delete</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
