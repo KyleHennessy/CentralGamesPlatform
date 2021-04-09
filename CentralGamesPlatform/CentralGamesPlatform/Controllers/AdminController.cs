@@ -27,13 +27,26 @@ namespace CentralGamesPlatform.Controllers
         {
             return View();
         }
-        public async Task <IActionResult> ViewGames(string sortOrder)
+        public async Task <IActionResult> ViewGames(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CategoryIdSortParam"] = sortOrder == "CategoryId" ? "categoryid_desc" : "CategoryId";
+            if(searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["CategoryIdSortParm"] = sortOrder == "CategoryId" ? "categoryid_desc" : "CategoryId";
-            //var games = _gameRepository.GetAllGames.OrderBy(g => g.GameId);
+            ViewData["CurrentFilter"] = searchString;
             var games = from g in _myDatabaseContext.Games select g;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                games = games.Where(g => g.Name.Contains(searchString));
+            }
             switch (sortOrder)
             {
                 case "name_desc":
@@ -49,40 +62,117 @@ namespace CentralGamesPlatform.Controllers
                     games = games.OrderBy(g => g.Name);
                     break;
             }
-            return View(await games.AsNoTracking().ToListAsync());
+            int pageSize = 5;
+            return View(await PaginatedList<Game>.CreateAsync(games.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
-
-        [HttpGet]
-        public IActionResult CreateRole()
+        public IActionResult Details(int? gameId)
+        {
+            if (gameId == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            var game = _gameRepository.GetGameById((int)gameId);
+            if (game == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            return View(game);
+        }
+        public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Game game)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // We just need to specify a unique role name to create a new role
-                IdentityRole identityRole = new IdentityRole
+                if (ModelState.IsValid)
                 {
-                    Name = model.RoleName
-                };
-
-                // Saves the role in the underlying AspNetRoles table
-                IdentityResult result = await _roleManager.CreateAsync(identityRole);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                foreach (IdentityError error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
+                    _myDatabaseContext.Add(game);
+                    _myDatabaseContext.SaveChanges();
+                    return RedirectToAction("ViewGames");
                 }
             }
-
-            return View(model);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes to the database");
+            }
+            return View(game);
         }
+        public IActionResult Edit(int? gameId)
+        {
+            if (gameId == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            var game = _gameRepository.GetGameById((int)gameId);
+            if (game == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            return View(game);
+        }
+        [HttpPost]
+        public IActionResult Edit(int gameId, Game game)
+        {
+            if(gameId != game.GameId)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _myDatabaseContext.Update(game);
+                    _myDatabaseContext.SaveChanges();
+                    return RedirectToAction("ViewGames");
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes to the database");
+                }
+            }
+            return View(game);
+        }
+        
+        //[HttpGet]
+        //public IActionResult CreateRole()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // We just need to specify a unique role name to create a new role
+        //        IdentityRole identityRole = new IdentityRole
+        //        {
+        //            Name = model.RoleName
+        //        };
+
+        //        // Saves the role in the underlying AspNetRoles table
+        //        IdentityResult result = await _roleManager.CreateAsync(identityRole);
+
+        //        if (result.Succeeded)
+        //        {
+        //            return RedirectToAction("Index", "Home");
+        //        }
+
+        //        foreach (IdentityError error in result.Errors)
+        //        {
+        //            ModelState.AddModelError("", error.Description);
+        //        }
+        //    }
+
+        //    return View(model);
+        //}
     }
 }

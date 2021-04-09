@@ -1,47 +1,66 @@
-﻿@model IEnumerable<Game>
+﻿@model PaginatedList<Game>
 
-@{ 
+@{
     ViewData["Title"] = "ViewGames";
 }
 
 <h2>View All Games</h2>
 <h3>Click on a game to edit its details</h3>
 <p>
-    <a asp-action="AddGame">Add Game</a>
+    <a asp-action="Create">Add Game</a>
 </p>
+
+<form asp-action="ViewGames" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find game by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="ViewGames">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="ViewGames" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.Name)</a>
+                <a asp-action="ViewGames" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
             <th>
-                <a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CategoryIdSortParam"]">@Html.DisplayNameFor(model => model.CategoryId)</a>
+                <a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CategoryIdSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Category</a>
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        €@Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CategoryId)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-gameId="@item.GameId">Edit</a>
-                        <a asp-action="Details" asp-route-gameId="@item.GameId">Details</a>
-                        <a asp-action="Delete" asp-route-gameId="@item.GameId">Delete</a>
-                    </td>
-                </tr>
-            }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    €@Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-gameId="@item.GameId">Edit</a> |
+                    <a asp-action="Details" asp-route-gameId="@item.GameId">Details</a> | 
+                    <a asp-action="Delete" asp-route-gameId="@item.GameId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-default @prevDisabled">Previous</a>
+<a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-default @nextDisabled">Next</a>
