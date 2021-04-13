@@ -1,25 +1,27 @@
 ﻿@model Game
 <div class="col-sm-4 col-lg-4 col-md-4">
-    <div class="img-thumbnail">
+    <div class="card h-100">
         <img src="@Model.ImageThumbnailUrl" alt="image thumbnail" />
-        <div class="figure-caption">
-            <h3 class="float-sm-right">@Model.Price.ToString("c")</h3>
-            <h3><a asp-controller="Game" asp-action="Details" asp-route-id="@Model.GameId">@Model.Name</a></h3>
-            <h3>@Model.Description </h3>
-        </div>
-        @if (Model.CategoryId >= 1 && Model.CategoryId <= 3)
-        {
-            <div class="startCasinoGame">
-                <a class="btn btn-success" asp-controller="Start" asp-action="GiveAccessToCasinoGame" asp-route-gameId="@Model.GameId">Start Game</a>
+        <div class="card-body d-flex flex-column">
+            <div class="figure-caption">
+                <h3 class="float-sm-right">@Model.Price.ToString("c")</h3>
+                <h3><a asp-controller="Game" asp-action="Details" asp-route-id="@Model.GameId">@Model.Name</a></h3>
+                <h3 class="game-description">@Model.Description </h3>
             </div>
-        }
-        else
-        {
-        <div class="addToCart">
-            <p class="button">
-                <a class="btn btn-success" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="@Model.GameId">Add to Cart</a> 
-            </p>
+            @if (Model.CategoryId >= 1 && Model.CategoryId <= 3)
+            {
+                <div class="startCasinoGame">
+                    <a class="btn btn-success mt-auto start-game" asp-controller="Start" asp-action="GiveAccessToCasinoGame" asp-route-gameId="@Model.GameId">Start Game</a>
+                </div>
+            }
+            else
+            {
+                <div class="addToCart">
+                    
+                        <a class="btn btn-success align-self-auto start-game" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="@Model.GameId">Add to Cart</a>
+                   
+                </div>
+            }
         </div>
-        }
     </div>
 </div>

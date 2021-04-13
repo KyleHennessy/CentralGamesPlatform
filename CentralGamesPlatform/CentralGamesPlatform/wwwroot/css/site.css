@@ -42,8 +42,10 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    background-color: #1b2838;
+    margin-bottom: 60px;
+    color: white;
 }
 .footer {
   position: absolute;
@@ -53,4 +55,51 @@ body {
   /* Set the fixed height of the footer here */
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
+}
+
+#logo {
+    height:80px;
+    width:80px; 
+    margin-right:10px;
+}
+
+.navbar {
+    background-color: #24282f !important;
+    border: 1px solid #24282f !important;
+}
+
+@media only screen and (max-width:600px) {
+    #register, #login, #manage, #logout {
+        margin-right:20px;
+    }
+}
+
+@media only screen and (max-width:600px) {
+    #genericCarousel .carousel-inner .carousel-item{
+       height:400px;
+    }
+}
+
+.col-sm-4, col-lg-4, col-md-4{
+    margin-bottom:10px !important;
+}
+@media (min-width: 576px){
+    .col-sm-4 {
+        max-width: 50%;
+    }
+}
+.game-description{
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.card-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.start-game{
+    margin-top:auto;
+}
+.table{
+    color:white !important;
 }

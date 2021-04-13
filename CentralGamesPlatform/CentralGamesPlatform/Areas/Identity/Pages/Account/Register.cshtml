@@ -37,36 +37,13 @@
     </div>
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <h3>Welcome</h3>
-                        <p>
-                            Sign up now to become a member of Central Games Platform
-                        </p>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
+            <h4>Welcome to Central Games Platform</h4>
+            <div>
+                <img src="~/images/logo/logo-blue.png" style="height:250px; width:250px; margin-left:75px; margin-top:20px " /><br />
+                <p style="margin-top:20px;">
+                    The only hybrid video game and casino game platform!
+                </p>
+            </div>
         </section>
     </div>
 </div>

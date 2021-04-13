@@ -11,6 +11,7 @@ using Stripe.Checkout;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using CentralGamesPlatform.ViewModels;
 
 namespace CentralGamesPlatform.Controllers
 {
@@ -23,11 +24,10 @@ namespace CentralGamesPlatform.Controllers
 		private readonly IOrderDetailRepository _orderDetailRepository;
 		private readonly ILicenceRepository _licenseRepository;
 		private readonly ICasinoPassRepository _casinoPassRepository;
-		private readonly MyDatabaseContext _myDatabaseContext;
 		//private readonly string WebHookSecret = "whsec_s5NmxKzkSFLlmSiqnkJiMxLqnwM9QeOA";
 		public PaymentController(IOrderRepository orderRepository, ShoppingCart shoppingCart, IPaymentRepository paymentRepository, 
 								 IOrderDetailRepository orderDetailRepository, ILicenceRepository licenseRepository, 
-								 ICasinoPassRepository casinoPassRepository, MyDatabaseContext myDatabaseContext)
+								 ICasinoPassRepository casinoPassRepository)
 		{
 			_orderRepository = orderRepository;
 			_shoppingCart = shoppingCart;
@@ -35,13 +35,21 @@ namespace CentralGamesPlatform.Controllers
 			_orderDetailRepository = orderDetailRepository;
 			_licenseRepository = licenseRepository;
 			_casinoPassRepository = casinoPassRepository;
-			_myDatabaseContext = myDatabaseContext;
+			
 			
 			StripeConfiguration.ApiKey = "sk_test_51IB0Z4BTwx1LYfRRop1pYWwRVKBAs0K7KZBRbKTubudFUXJPN5BlooRahipg8qIkpIQ49d6c4YZE9ErcziO23QtR00rzwq6cbk";
 		}
-		public IActionResult Index( Models.Order order, string total)
+		public IActionResult Index()
 		{
-			return View(order);
+			int orderId = (int)TempData["orderId"];
+			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
+			var paymentSummaryViewModel = new PaymentSummaryViewModel
+			{
+				ShoppingCart = _shoppingCart,
+				ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal(),
+				Order = _orderRepository.GetOrder(orderId)
+			};
+			return View(paymentSummaryViewModel);
 		}
 
 		[HttpPost("create-checkout-session")]

@@ -19,12 +19,12 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <div id="logo">
-                    <img class="img-fluid" src="~/images/games.png" height="80" width="80" style="margin-right:10px;" />
+                    <img class="img-fluid" src="~/images/logo/logo-white.png" />
                 </div>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Central Games</a>
+                <partial name="_LoginPartial" />
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -32,31 +32,41 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="TestCasinoGame" asp-action="Index">Game</a>
-                        </li>*@
+                                <a class="nav-link text-light" asp-area="" asp-controller="TestCasinoGame" asp-action="Index">Game</a>
+                            </li>*@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Library" asp-action="Index">Library</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Library" asp-action="Index">Library</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Payout" asp-action="Index">Payout</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Payout" asp-action="Index">Payout</a>
                         </li>
-                        @await Component.InvokeAsync("CategoryMenu")
+                        @*@await Component.InvokeAsync("CategoryMenu")*@
                         @await Component.InvokeAsync("ShoppingCartSummary")
-                        @await Component.InvokeAsync("WalletBalance") 
-                        <partial name="_LoginPartial"/>
+                        @await Component.InvokeAsync("WalletBalance")
+
 
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
+        <form asp-controller="Home" asp-action="Search" method="get">
+            <div class="form-actions no-color">                   
+                Find game by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-primary" /> |
+                    
+                @await Component.InvokeAsync("CategoryMenu")
+            </div>
+        </form>
+        <br />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -64,10 +74,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            Icons made by <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-            &copy; 2019 - My TodoList App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            <a asp-area="" asp-controller="Contact" asp-action="Index">Contact</a>
-            
+            Central Games Platform was created by <a href="https://www.linkedin.com/in/kyle-hennessy-itcarlow/" title="Flaticon">Kyle Hennessy</a> | C00227463
+
         </div>
 
     </footer>

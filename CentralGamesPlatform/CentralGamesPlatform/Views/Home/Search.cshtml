@@ -1,0 +1,57 @@
+﻿@model PaginatedList<Game>
+
+@{
+    ViewData["Title"] = "ViewGames";
+}
+
+@*<form asp-action="Search" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find game by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="Index">Return to home</a>
+        </p>
+    </div>
+</form>*@
+
+<table class="table text-white">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Category
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    €@Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-controller="Game" asp-route-id="@item.GameId">View</a>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-primary text-light @prevDisabled">Previous</a>
+<a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-primary text-light @nextDisabled">Next</a>

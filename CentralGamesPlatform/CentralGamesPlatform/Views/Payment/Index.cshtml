@@ -1,13 +1,60 @@
-﻿@model Order
+﻿@model PaymentSummaryViewModel
 @{
     ViewData["Title"] = "Payment";
 }
 <script src="https://js.stripe.com/v3/"></script>
-@*<script charset="utf-8">
-        var stripe = Stripe("pk_test_51IB0Z4BTwx1LYfRREoDEBBJOh4HQM4tCzZgvmqRqnutsLFWU2rzPvaUT0pa7vTVp5WqKMMPxyx1nFzeeLjW4o7Eo00umgSxWfI");
-    </script>*@
+<h1>Order Summary</h1>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Selected Amount</th>
+            <th>Game</th>
+            <th class="text-right">Price</th>
+            <th class="text-right">Sub Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+        {
+            <tr>
+                <td class="text-center">@item.Amount</td>
+                <td class="text-left">@item.Game.Name</td>
+                <td class="text-right">@item.Game.Price.ToString("c")</td>
+                <td class="text-right">
+                    @((item.Amount * item.Game.Price).ToString("c"))
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right">Total</td>
+            <td class="text-right">@Model.ShoppingCartTotal.ToString("c")</td>
+        </tr>
+    </tfoot>
+</table>
 
-<button type="button" id="checkout-button" asp-controller="Payment" asp-action="CreateCheckoutSession">Checkout</button>
+
+<p class="text-sm-left">
+    First Name: @Model.Order.FirstName
+</p>
+<p class="text-sm-left">
+    Last Name: @Model.Order.LastName
+</p>
+<p class="text-sm-left">
+    Phone Number: @Model.Order.PhoneNumber
+</p>
+<p class="text-sm-left">
+    Address: @Model.Order.Address
+</p>
+<p class="text-sm-left">
+    County: @Model.Order.County
+</p>
+<p class="text-sm-left">
+    EirCode: @Model.Order.EirCode
+</p>
+
+<button type="button" class="btn btn-primary" id="checkout-button" asp-controller="Payment" asp-action="CreateCheckoutSession">Checkout</button>
 
 <script type="text/javascript">
     // Create an instance of the Stripe object with your publishable API key

@@ -118,29 +118,48 @@ namespace CentralGamesPlatform.Controllers
             }
             return View(game);
         }
-        [HttpPost]
-        public IActionResult Edit(int gameId, Game game)
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(int? gameId)
         {
-            if(gameId != game.GameId)
+            if (gameId == null)
             {
                 Response.StatusCode = 404;
                 return RedirectToAction("HandleError", "Error", new { code = 404 });
             }
-            if (ModelState.IsValid)
+            var gameToUpdate = await _myDatabaseContext.Games.FirstOrDefaultAsync(g => g.GameId == gameId);
+            if (await TryUpdateModelAsync<Game>(
+                gameToUpdate,
+                "",
+                g => g.Name, g => g.Description, g => g.Price, g => g.ImageUrl, g => g.ImageThumbnailUrl, g => g.IsOnSale, g => g.CategoryId))
             {
                 try
                 {
-                    _myDatabaseContext.Update(game);
-                    _myDatabaseContext.SaveChanges();
-                    return RedirectToAction("ViewGames");
+                    await _myDatabaseContext.SaveChangesAsync();
+                    return RedirectToAction("Index");
                 }
                 catch (DbUpdateException)
                 {
                     ModelState.AddModelError("", "Unable to save changes to the database");
                 }
             }
-            return View(game);
+            return View(gameToUpdate);
         }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            /*_myDatabaseContext.Update(game)*/;
+        //            _myDatabaseContext.SaveChanges();
+        //            return RedirectToAction("ViewGames");
+        //        }
+        //        catch (DbUpdateException)
+        //        {
+        //            ModelState.AddModelError("", "Unable to save changes to the database");
+        //        }
+        //    }
+        //    return View(game);
+        //}
         
         //[HttpGet]
         //public IActionResult CreateRole()
