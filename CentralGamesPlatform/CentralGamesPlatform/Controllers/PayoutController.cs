@@ -51,12 +51,6 @@ namespace CentralGamesPlatform.Controllers
 				HttpResponse createPayoutResponse = response.Result;
 				var payout = createPayoutResponse.Result<CreatePayoutResponse>();
 
-				//var getResponse = GetPayout(payout.BatchHeader.PayoutBatchId, true);
-				//HttpResponse getPayoutResponse = getResponse.Result;
-				//var payoutBatch = getPayoutResponse.Result<PayoutBatch>();
-		
-				//GetPayoutItem(payoutBatch.Items[0].PayoutItemId, true).Wait();
-
 				submittedPayout.PayPalBatchId = payout.BatchHeader.PayoutBatchId;
 				//_walletRepository.SubtractFromWallet(userId, submittedPayout.AmountTransfered);
 				_payoutRepository.CreatePayout(submittedPayout);

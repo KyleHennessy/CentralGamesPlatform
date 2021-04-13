@@ -27,6 +27,7 @@ namespace CentralGamesPlatform.Models
 					UserId = userId
 				};
 				_myDatabaseContext.Licences.Add(license);
+				_myDatabaseContext.SaveChanges();
 			}
 		}
 

@@ -1,0 +1,22 @@
+﻿@model FileUpload
+@if (ViewBag.SuccessMessage != null)
+{
+    <p class="text-success">@ViewBag.SuccessMessage</p>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <p class="text-danger">@ViewBag.ErrorMessage</p>
+}
+<h1>Verify your account</h1>
+<p>To play casino games, you must verify your photo ID to prove you are genuine and you over the age of 18. This is not required to play and purchase video games</p>
+
+<h3>Max filke size is 2MB. Accepted file types are .jpg or .png</h3>
+<form asp-action="Index" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label asp-for="file"></label>
+        <input asp-for="file" class="form-control" type="file"/>
+        <span asp-validation-for="file" class="text-danger"></span>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Submit" />
+    @*<button type="submit" class="btn btn-primary" value="Complete Order" asp-controller="Payment" asp-action="Index">Proceed</button>*@
+</form>

@@ -16,6 +16,7 @@ namespace CentralGamesPlatform.Models
         {
             result.DateResultPlaced = DateTime.Now;
             _myDatabaseContext.Results.Add(result);
+            _myDatabaseContext.SaveChanges();
         }
     }
 }
