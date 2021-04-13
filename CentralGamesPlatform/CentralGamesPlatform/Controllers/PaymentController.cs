@@ -39,15 +39,15 @@ namespace CentralGamesPlatform.Controllers
 			
 			StripeConfiguration.ApiKey = "sk_test_51IB0Z4BTwx1LYfRRop1pYWwRVKBAs0K7KZBRbKTubudFUXJPN5BlooRahipg8qIkpIQ49d6c4YZE9ErcziO23QtR00rzwq6cbk";
 		}
-		public IActionResult Index()
+		public IActionResult Index(int id)
 		{
-			int orderId = (int)TempData["orderId"];
+			//int orderId = (int)TempData["orderId"];
 			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
 			var paymentSummaryViewModel = new PaymentSummaryViewModel
 			{
 				ShoppingCart = _shoppingCart,
 				ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal(),
-				Order = _orderRepository.GetOrder(orderId)
+				Order = _orderRepository.GetOrder(id)
 			};
 			return View(paymentSummaryViewModel);
 		}

@@ -51,7 +51,7 @@ namespace CentralGamesPlatform.Controllers
 				order.UserId = userId;
 				_orderRepository.CreateOrder(order);
 				TempData["orderId"] = order.OrderId;
-				return RedirectToAction("Index", "Payment");
+				return RedirectToAction("Index", "Payment", new { id = order.OrderId });
 			}
 			
 			return View(order);
