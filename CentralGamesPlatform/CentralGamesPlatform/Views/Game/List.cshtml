@@ -7,6 +7,14 @@
 <div class="row">
     @foreach (var game in Model.Games)
     {
-        <partial name="_GameCard" model="game" />
+        if (Model.OwnedGameIds.Contains(game.GameId))
+        {
+            @await Html.PartialAsync("_GameCard", game, new ViewDataDictionary(ViewData) { { "Owned", true } });
+        }
+        else
+        {
+            <partial name="_GameCard" model="game" />
+        }
+
     }
 </div>

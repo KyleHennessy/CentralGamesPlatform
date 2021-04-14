@@ -19,7 +19,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <div id="logo">
                     <img class="img-fluid" src="~/images/logo/logo-white.png" />
@@ -37,9 +37,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @*<li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="TestCasinoGame" asp-action="Index">Game</a>
-                            </li>*@
+                 
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Library" asp-action="Index">Library</a>
                         </li>
@@ -58,14 +56,15 @@
     </header>
 
     <div class="container">
-        <form asp-controller="Home" asp-action="Search" method="get">
-            <div class="form-actions no-color">                   
-                Find game by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                <input type="submit" value="Search" class="btn btn-primary" /> |
-                    
-                @await Component.InvokeAsync("CategoryMenu")
-            </div>
-        </form>
+        <div class="row">
+            <form asp-controller="Home" asp-action="Search" method="get" class="card" style="width:100%;" id="gameSearchCard">
+                <div class="form-actions no-color">
+                    <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" id="gameSearchBar" placeholder="Search the store"/>
+                    <input type="submit" value="Search" class="btn btn-primary" /> |
+                    @await Component.InvokeAsync("CategoryMenu")
+                </div>
+            </form>
+        </div>
         <br />
         <main role="main" class="pb-3">
             @RenderBody()

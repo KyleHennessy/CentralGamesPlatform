@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,18 +16,23 @@ namespace CentralGamesPlatform.Controllers
     public class AdminController : Controller
     {
         private readonly IGameRepository _gameRepository;
+        private readonly IVerificationRepository _verificationRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly MyDatabaseContext _myDatabaseContext;
-        public AdminController(RoleManager<IdentityRole> roleManager, IGameRepository gameRepository, MyDatabaseContext myDatabaseContext)
+        public AdminController(RoleManager<IdentityRole> roleManager, IGameRepository gameRepository, 
+                               MyDatabaseContext myDatabaseContext, IVerificationRepository verificationRepository)
         {
             _roleManager = roleManager;
             _gameRepository = gameRepository;
+            _verificationRepository = verificationRepository;
             _myDatabaseContext = myDatabaseContext;
         }
         public IActionResult Index()
         {
             return View();
         }
+
+        //Manage Games
         public async Task <IActionResult> ViewGames(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -62,7 +68,7 @@ namespace CentralGamesPlatform.Controllers
                     games = games.OrderBy(g => g.Name);
                     break;
             }
-            int pageSize = 5;
+            int pageSize = 10;
             return View(await PaginatedList<Game>.CreateAsync(games.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
         public IActionResult Details(int? gameId)
@@ -84,6 +90,7 @@ namespace CentralGamesPlatform.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Game game)
@@ -118,6 +125,7 @@ namespace CentralGamesPlatform.Controllers
             }
             return View(game);
         }
+
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? gameId)
@@ -145,22 +153,94 @@ namespace CentralGamesPlatform.Controllers
             }
             return View(gameToUpdate);
         }
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            /*_myDatabaseContext.Update(game)*/;
-        //            _myDatabaseContext.SaveChanges();
-        //            return RedirectToAction("ViewGames");
-        //        }
-        //        catch (DbUpdateException)
-        //        {
-        //            ModelState.AddModelError("", "Unable to save changes to the database");
-        //        }
-        //    }
-        //    return View(game);
-        //}
-        
+
+        public async Task<IActionResult> ViewVerificationRequests(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["StatusSortParam"] = String.IsNullOrEmpty(sortOrder) ? "status_desc" : "";
+            ViewData["DateOfRequestSortParam"] = sortOrder == "DateOfRequest" ? "dateofrequest_desc" : "DateOfRequest";
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+            var verifications = from v in _myDatabaseContext.Verifications select v;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                verifications = verifications.Where(v => v.UserId.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "status_desc":
+                    verifications = verifications.OrderByDescending(v => v.Status);
+                    break;
+                case "DateOfRequest":
+                    verifications = verifications.OrderBy(v => v.DateOfRequest);
+                    break;
+                case "dateofrequest_desc":
+                    verifications = verifications.OrderByDescending(v => v.DateOfRequest);
+                    break;
+                default:
+                    verifications = verifications.OrderBy(v => v.DateOfRequest);
+                    break;
+            }
+            int pageSize = 10;
+            return View(await PaginatedList<Verification>.CreateAsync(verifications.AsNoTracking(), pageNumber ?? 1, pageSize));
+        }
+        public IActionResult UpdateVerificationRequest(int? verificationId)
+        {
+            if (verificationId == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            var verificationRequest = _verificationRepository.RetrieveVerificationById((int)verificationId);
+            if (verificationRequest == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            using (MemoryStream memoryStream = new MemoryStream(verificationRequest.Content))
+            {
+                ViewData["Image"] = Convert.ToBase64String(verificationRequest.Content);
+            }
+            
+            return View(verificationRequest);
+        }
+
+        [HttpPost, ActionName("UpdateVerificationRequest")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateVerificationRequestPost(int? verificationId)
+        {
+            if (verificationId == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            var verificationRequestToUpdate = await _myDatabaseContext.Verifications.FirstOrDefaultAsync(g => g.VerificationId == verificationId);
+            if (await TryUpdateModelAsync<Verification>(
+                verificationRequestToUpdate,
+                "",
+                v => v.Status))
+            {
+                try
+                {
+                    await _myDatabaseContext.SaveChangesAsync();
+                    return RedirectToAction("ViewVerificationRequests");
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes to the database");
+                }
+            }
+            return View(verificationRequestToUpdate);
+        }
+
         //[HttpGet]
         //public IActionResult CreateRole()
         //{

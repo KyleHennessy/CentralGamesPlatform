@@ -20,7 +20,7 @@
     </div>
 </form>
 
-<table class="table">
+<table class="table table-light table-striped table-hover">
     <thead>
         <tr>
             <th>
@@ -31,6 +31,9 @@
             </th>
             <th>
                 <a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CategoryIdSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Category</a>
+            </th>
+            <th>
+
             </th>
         </tr>
     </thead>

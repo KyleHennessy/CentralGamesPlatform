@@ -31,7 +31,7 @@ namespace CentralGamesPlatform.Areas.CoinFlip.Controllers
             {
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
-            if (pass.Active == true && pass.GameId == 1)
+            if (pass.Active == true && pass.GameId == 10)
             { 
                 return View(pass);
             }

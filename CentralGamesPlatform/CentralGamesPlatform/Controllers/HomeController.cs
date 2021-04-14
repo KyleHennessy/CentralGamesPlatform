@@ -30,8 +30,7 @@ namespace CentralGamesPlatform.Controllers
         }
         public async Task <IActionResult> Search(string currentFilter, string searchString, int? pageNumber)
         {
-
-            if(searchString != null)
+            if (searchString != null)
             {
                 pageNumber = 1;
             }

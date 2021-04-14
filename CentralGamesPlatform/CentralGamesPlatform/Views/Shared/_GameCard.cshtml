@@ -14,14 +14,19 @@
                     <a class="btn btn-success mt-auto start-game" asp-controller="Start" asp-action="GiveAccessToCasinoGame" asp-route-gameId="@Model.GameId">Start Game</a>
                 </div>
             }
+            else if (ViewData["Owned"] != null && (bool)ViewData["Owned"] == true)
+            {
+                <div class="playOwnedGame">
+                    <a class="btn btn-success mt-auto start-game" asp-controller="Start" asp-action="GiveAccessToOwnedGame" asp-route-gameId="@Model.GameId">Play Game</a>
+                </div>
+            }
             else
             {
                 <div class="addToCart">
-                    
-                        <a class="btn btn-success align-self-auto start-game" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="@Model.GameId">Add to Cart</a>
-                   
+                    <a class="btn btn-success mt-auto start-game" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="@Model.GameId">Add to Cart</a>
                 </div>
             }
+
         </div>
     </div>
 </div>

@@ -2,8 +2,10 @@
 using CentralGamesPlatform.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CentralGamesPlatform.Controllers
@@ -12,16 +14,34 @@ namespace CentralGamesPlatform.Controllers
 	{
 		private readonly IGameRepository _gameRepository;
 		private readonly ICategoryRepository _categoryRepository;
+		private readonly MyDatabaseContext _myDatabaseContext;
 
-		public GameController(IGameRepository gameRepository, ICategoryRepository categoryRepository)
+		public GameController(IGameRepository gameRepository, ICategoryRepository categoryRepository,
+							  MyDatabaseContext myDatabaseContext)
 		{
 			_gameRepository = gameRepository;
 			_categoryRepository = categoryRepository;
+			_myDatabaseContext = myDatabaseContext;
 		}
 
 		public ViewResult List(string category)
 		{
-			IEnumerable<Game> games;
+			string gameId;
+			string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			//var query = (from l in _myDatabaseContext.Licences where  l.UserId == userId
+			//			join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId
+			//			join g in _myDatabaseContext.Games on od.GameId equals g.GameId
+			//			select new
+			//			{
+			//				gameId = g.GameId.ToString()
+			//			}).ToList();
+			var query = (from l in _myDatabaseContext.Licences
+						 where l.UserId == userId
+						 join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId
+						 join g in _myDatabaseContext.Games on od.GameId equals g.GameId
+						 select g.GameId).ToList();
+			IEnumerable <Game> games;
+			//IEnumerable ownedGameIds = query;
 			string currentCategory;
 			//if category is null then current category is all games
 			if (string.IsNullOrEmpty(category))
@@ -39,6 +59,7 @@ namespace CentralGamesPlatform.Controllers
 			return View(new GameListViewModel
 			{
 				Games = games,
+				OwnedGameIds = query,
 				CurrentCategory = currentCategory
 			});
 		}

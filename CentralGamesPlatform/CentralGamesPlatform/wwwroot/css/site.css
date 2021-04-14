@@ -100,6 +100,21 @@ body {
 .start-game{
     margin-top:auto;
 }
-.table{
-    color:white !important;
+.table-light td{
+    border-color:lightgray;
 }
+#gameSearchCard{
+    background-color:transparent !important;
+}
+#gameSearchBar{
+    width:80%;
+}
+@media only screen and (max-width:1200px) {
+    #gameSearchBar {
+        width: 60%;
+    }
+}
+
+.custom-toggler .navbar-toggler {
+    border-color: rgb(255,102,203);
+} 

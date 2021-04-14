@@ -4,17 +4,7 @@
     ViewData["Title"] = "ViewGames";
 }
 
-@*<form asp-action="Search" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find game by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-action="Index">Return to home</a>
-        </p>
-    </div>
-</form>*@
-
-<table class="table text-white">
+<table class="table table-light table-striped table-hover">
     <thead>
         <tr>
             <th>
@@ -39,10 +29,27 @@
                     €@Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId)
+                    @*@Html.DisplayFor(modelItem => item.CategoryId)*@
+                @if (item.CategoryId >= 1 && item.CategoryId <= 3)
+                {
+                    @:Casino Game
+                }
+                else if (item.CategoryId >= 4 && item.CategoryId <= 6)
+                {
+                    @:Browser Game
+                }
+                else if (item.CategoryId >= 7 && item.CategoryId <= 9)
+                {
+                    @:Download Game
+                }
+                else
+                {
+                    @:Casino Pass
+                }
                 </td>
                 <td>
                     <a asp-action="Details" asp-controller="Game" asp-route-id="@item.GameId">View</a>
+                </td>
             </tr>
         }
     </tbody>
@@ -53,5 +60,5 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-primary text-light @prevDisabled">Previous</a>
-<a asp-action="ViewGames" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-primary text-light @nextDisabled">Next</a>
+<a asp-action="Search" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-primary text-light @prevDisabled">Previous</a>
+<a asp-action="Search" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-primary text-light @nextDisabled">Next</a>

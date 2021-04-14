@@ -1,0 +1,66 @@
+﻿@model PaginatedList<Verification>
+
+@{
+    ViewData["Title"] = "ViewGames";
+}
+<p>
+    <a asp-action="Index"></a>
+</p>
+<h2>View All Verification Requests</h2>
+<h3>Approve or deny verification requests for casino games</h3>
+
+<form asp-action="ViewVerificationRequests" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Search by user ID: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="ViewVerificationRequests">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table table-light table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="ViewVerificationRequests" asp-route-sortOrder="@ViewData["StatusSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Status</a>
+            </th>
+            <th>
+                User ID
+            </th>
+            <th>
+                <a asp-action="ViewVerificationRequests" asp-route-sortOrder="@ViewData["DateOfRequestSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Date Of Request</a>
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfRequest)
+                </td>
+                <td>
+                    <a asp-action="UpdateVerificationRequest" asp-route-verificationId="@item.VerificationId">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="ViewVerificationRequests" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-primary @prevDisabled">Previous</a>
+<a asp-action="ViewVerificationRequests" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-primary @nextDisabled">Next</a>
