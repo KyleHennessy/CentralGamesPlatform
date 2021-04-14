@@ -23,18 +23,33 @@ namespace CentralGamesPlatform.Controllers
 		}
         public IActionResult Index()
         {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var query = (from l in _myDatabaseContext.Licences
-                         where l.UserId == userId
-                         join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId
-                         join g in _myDatabaseContext.Games on od.GameId equals g.GameId
-                         select g.GameId).ToList();
-            var homeViewModel = new HomeViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                GamesOnSale = _gameRepository.GetGamesOnSale,
-                OwnedGameIds = query
-            };
-            return View(homeViewModel);
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var query = (from l in _myDatabaseContext.Licences
+                             where l.UserId == userId
+                             join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId
+                             join g in _myDatabaseContext.Games on od.GameId equals g.GameId
+                             select g.GameId).ToList();
+
+
+                var homeViewModel = new HomeViewModel
+                {
+                    GamesOnSale = _gameRepository.GetGamesOnSale,
+                    OwnedGameIds = query
+                };
+                return View(homeViewModel);
+            }
+            else
+            {
+                var homeViewModel = new HomeViewModel
+                {
+                    GamesOnSale = _gameRepository.GetGamesOnSale,
+                    OwnedGameIds = null
+                };
+                return View(homeViewModel);
+            }
+            
         }
         public async Task <IActionResult> Search(string currentFilter, string searchString, int? pageNumber)
         {

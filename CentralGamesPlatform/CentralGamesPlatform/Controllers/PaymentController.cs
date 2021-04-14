@@ -53,12 +53,16 @@ namespace CentralGamesPlatform.Controllers
 		}
 
 		[HttpPost("create-checkout-session")]
-		public IActionResult CreateCheckoutSession(/*Models.Order order*/)
+		public IActionResult CreateCheckoutSession()
 		{
 			//Models.Order order = (Models.Order)TempData["order"];
 			decimal orderTotal;
 			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
 			orderTotal = _shoppingCart.GetShoppingCartTotal() * 100;
+			if(orderTotal == 0.00M)
+            {
+				return RedirectToAction("Success");
+            }
 			var options = new SessionCreateOptions
 			{
 				PaymentMethodTypes = new List<string>
