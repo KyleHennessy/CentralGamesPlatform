@@ -15,38 +15,45 @@ namespace CentralGamesPlatform.Controllers
 	{
         private readonly IGameRepository _gameRepository;
         private readonly ILicenceRepository _licenceRepository;
-        
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly ICasinoPassRepository _casinoPassRepository;
+        private readonly MyDatabaseContext _myDatabaseContext;
         public LibraryController(IGameRepository gameRepository, ILicenceRepository licenceRepository, 
-                                 IOrderDetailRepository orderDetailRepository, ICasinoPassRepository casinoPassRepository)
+                                 IOrderDetailRepository orderDetailRepository, ICasinoPassRepository casinoPassRepository,
+                                 MyDatabaseContext myDatabaseContext)
         {
             _gameRepository = gameRepository;
             _licenceRepository = licenceRepository;
             _orderDetailRepository = orderDetailRepository;
             _casinoPassRepository = casinoPassRepository;
+            _myDatabaseContext = myDatabaseContext;
         }
 
         public IActionResult Index()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var licences = _licenceRepository.GetLicences(userId);
-            List<int> orderDetailIds = new List<int>();
-            foreach (var licence in licences)
-            {
-                orderDetailIds.Add(licence.OrderDetailId);
-            }
-            List<OrderDetail> orderDetails = new List<OrderDetail>();
-            for(int i = 0; i < orderDetailIds.Count(); i++)
-            {
-                orderDetails.Add(_orderDetailRepository.GetOrderDetailById(orderDetailIds[i]));
-            }
-            List<Game> ownedGames = new List<Game>();
-            foreach (var orderDetail in orderDetails)
-            {
-                ownedGames.Add(_gameRepository.GetGameById(orderDetail.GameId));
-            }
-            ownedGames.RemoveAll(og => og.GameId == -1);
+            //List<int> orderDetailIds = new List<int>();
+            //foreach (var licence in licences)
+            //{
+            //    orderDetailIds.Add(licence.OrderDetailId);
+            //}
+            //List<OrderDetail> orderDetails = new List<OrderDetail>();
+            //for(int i = 0; i < orderDetailIds.Count(); i++)
+            //{
+            //    orderDetails.Add(_orderDetailRepository.GetOrderDetailById(orderDetailIds[i]));
+            //}
+            //List<Game> ownedGames = new List<Game>();
+            //foreach (var orderDetail in orderDetails)
+            //{
+            //    ownedGames.Add(_gameRepository.GetGameById(orderDetail.GameId));
+            //}
+            var query = (from l in _myDatabaseContext.Licences
+                         where l.UserId == userId
+                         join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId
+                         join g in _myDatabaseContext.Games on od.GameId equals g.GameId
+                         select g).ToList();
+            query.RemoveAll(og => og.GameId == -1);
             var usersPasses = _casinoPassRepository.GetCasinoPassesByUserId(userId);
             List<CasinoPass> ownedPasses = new List<CasinoPass>();
             List<Game> activeCasinoGames = new List<Game>();
@@ -63,7 +70,7 @@ namespace CentralGamesPlatform.Controllers
             }
             var libraryViewModel = new LibraryViewModel
             {
-                OwnedGames = ownedGames,
+                OwnedGames = query,
                 OwnedPasses = ownedPasses,
                 ActiveCasinoGames = activeCasinoGames
             };

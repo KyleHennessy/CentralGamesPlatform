@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using CentralGamesPlatform.Models;
 using CentralGamesPlatform.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CentralGamesPlatform.Controllers
 {
@@ -22,9 +23,16 @@ namespace CentralGamesPlatform.Controllers
 		}
         public IActionResult Index()
         {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var query = (from l in _myDatabaseContext.Licences
+                         where l.UserId == userId
+                         join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId
+                         join g in _myDatabaseContext.Games on od.GameId equals g.GameId
+                         select g.GameId).ToList();
             var homeViewModel = new HomeViewModel
             {
-                GamesOnSale = _gameRepository.GetGamesOnSale
+                GamesOnSale = _gameRepository.GetGamesOnSale,
+                OwnedGameIds = query
             };
             return View(homeViewModel);
         }

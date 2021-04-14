@@ -99,30 +99,27 @@ namespace CentralGamesPlatform.Controllers
 				var result = response.Result<CreatePayoutResponse>();
 				return response;
 			}
-			catch (HttpException ex)
+			catch
 			{
 				return null;
 			}
 		}
 
-		public async static Task<HttpResponse> GetPayout(string batchId,bool debug = false)
+		public async static Task<HttpResponse> GetPayout(string batchId)
         {
-            //try
-            //{
-				PayoutsGetRequest request = new PayoutsGetRequest(batchId);
+            try
+            {
+                PayoutsGetRequest request = new PayoutsGetRequest(batchId);
 				var getResponse = await PayPalClient.client().Execute(request);
 				var result = getResponse.Result<PayoutBatch>();
-                if (debug)
-                {
-					//do something
-                }
+                
 				return getResponse;
 
-            //}
-			//catch (HttpException ex)
-            //{
-			//	return null;
-            //}
+            }
+            catch
+            {
+                return null;
+            }
         }
 
 		public async static Task<HttpResponse> GetPayoutItem(string itemId, bool debug = false)
@@ -139,7 +136,7 @@ namespace CentralGamesPlatform.Controllers
 				}
 				return getResponse;
 			}
-			catch (HttpException ex)
+			catch
 			{
 				return null;
 			}

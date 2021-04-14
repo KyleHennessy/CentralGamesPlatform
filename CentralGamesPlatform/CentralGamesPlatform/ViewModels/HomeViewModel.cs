@@ -9,5 +9,6 @@ namespace CentralGamesPlatform.ViewModels
 	public class HomeViewModel
 	{
 		public IEnumerable<Game> GamesOnSale { get; set; }
+		public List<int> OwnedGameIds { get; set; }
 	}
 }

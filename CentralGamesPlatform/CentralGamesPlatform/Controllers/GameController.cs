@@ -26,15 +26,7 @@ namespace CentralGamesPlatform.Controllers
 
 		public ViewResult List(string category)
 		{
-			string gameId;
 			string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-			//var query = (from l in _myDatabaseContext.Licences where  l.UserId == userId
-			//			join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId
-			//			join g in _myDatabaseContext.Games on od.GameId equals g.GameId
-			//			select new
-			//			{
-			//				gameId = g.GameId.ToString()
-			//			}).ToList();
 			var query = (from l in _myDatabaseContext.Licences
 						 where l.UserId == userId
 						 join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId

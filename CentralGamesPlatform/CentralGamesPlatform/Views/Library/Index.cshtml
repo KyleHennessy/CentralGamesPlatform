@@ -21,6 +21,7 @@
 <div class="row">
     @foreach (var game in Model.OwnedGames)
     {
-        <partial name="_GameCard" model="game" />
+        @*<partial name="_GameCard" model="game" />*@
+        @await Html.PartialAsync("_GameCard", game, new ViewDataDictionary(ViewData) { { "Owned", true } });
     }
 </div>
