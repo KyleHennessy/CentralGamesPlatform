@@ -48,6 +48,10 @@ namespace CentralGamesPlatform.Areas.CoinFlip.Controllers
             {
                 return RedirectToAction("Index", "Home", new { area = "" });  
             }
+            if(casinoPass.Expired == true && casinoPass.Active == false)
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
             Random rand = new Random();
             if (rand.Next(0, 2) == 0)
             {
@@ -56,7 +60,7 @@ namespace CentralGamesPlatform.Areas.CoinFlip.Controllers
                 result.Win = false;
                 result.CasinoPassId = casinoPass.CasinoPassId;
                 result.AmountWon = 0.00M;
-                if (casinoPass.Expired == false && casinoPass.Active == true && casinoPass.GameId == 1)
+                if (casinoPass.Expired == false && casinoPass.Active == true && casinoPass.GameId == 10)
                 {
                     _resultRepostiory.CreateResult(result);
                     _casinoPassRepository.ExpireCasinoPass(casinoPass.CasinoPassId);
@@ -77,7 +81,7 @@ namespace CentralGamesPlatform.Areas.CoinFlip.Controllers
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 
                 
-                if (casinoPass.Expired == false && casinoPass.Active == true && casinoPass.GameId == 1)
+                if (casinoPass.Expired == false && casinoPass.Active == true && casinoPass.GameId == 10)
                 {
                     _resultRepostiory.CreateResult(result);
                     _walletRepository.AddToWallet(userId, result.AmountWon);

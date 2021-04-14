@@ -11,7 +11,7 @@
 
     @foreach (var game in Model.GamesOnSale)
     {
-        if (Model.OwnedGameIds.Contains(game.GameId))
+        if (Model.OwnedGameIds.Contains(game.GameId) && game.GameId != -1)
         {
             @await Html.PartialAsync("_GameCard", game, new ViewDataDictionary(ViewData) { { "Owned", true } });
         }

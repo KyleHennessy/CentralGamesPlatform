@@ -28,15 +28,18 @@ namespace CentralGamesPlatform.Models
 			{
 				if (cartItem.Game.GameId == -1)
 				{
-					var orderDetail = new OrderDetail
+					for (int i = 0; i < cartItem.Amount; i++)
 					{
-						Amount = cartItem.Amount,
-						Price = cartItem.Game.Price,
-						GameId = cartItem.Game.GameId,
-						OrderId = order.OrderId,
-						CasinoPass = true
-					};
-					_myDatabaseContext.OrderDetails.Add(orderDetail);
+						var orderDetail = new OrderDetail
+						{
+							Amount = cartItem.Amount,
+							Price = cartItem.Game.Price,
+							GameId = cartItem.Game.GameId,
+							OrderId = order.OrderId,
+							CasinoPass = true
+						};
+						_myDatabaseContext.OrderDetails.Add(orderDetail);
+					}
 				}
 				else
 				{

@@ -4,7 +4,7 @@
 }
 <script src="https://js.stripe.com/v3/"></script>
 <h1>Order Summary</h1>
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped table-light">
     <thead>
         <tr>
             <th>Selected Amount</th>
@@ -35,24 +35,30 @@
 </table>
 
 
-<p class="text-sm-left">
-    First Name: @Model.Order.FirstName
-</p>
-<p class="text-sm-left">
-    Last Name: @Model.Order.LastName
-</p>
-<p class="text-sm-left">
-    Phone Number: @Model.Order.PhoneNumber
-</p>
-<p class="text-sm-left">
-    Address: @Model.Order.Address
-</p>
-<p class="text-sm-left">
-    County: @Model.Order.County
-</p>
-<p class="text-sm-left">
-    EirCode: @Model.Order.EirCode
-</p>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title text-dark">Billing Details</h5>
+        <p class="text-sm-left text-dark">
+            First Name: @Model.Order.FirstName
+        </p>
+        <p class="text-sm-left text-dark">
+            Last Name: @Model.Order.LastName
+        </p>
+        <p class="text-sm-left text-dark">
+            Phone Number: @Model.Order.PhoneNumber
+        </p>
+        <p class="text-sm-left text-dark">
+            Address: @Model.Order.Address
+        </p>
+        <p class="text-sm-left text-dark">
+            County: @Model.Order.County
+        </p>
+        <p class="text-sm-left text-dark">
+            EirCode: @Model.Order.EirCode
+        </p>
+    </div>
+</div>
+<br/>
 
 <button type="button" class="btn btn-primary" id="checkout-button" asp-controller="Payment" asp-action="CreateCheckoutSession">Checkout</button>
 

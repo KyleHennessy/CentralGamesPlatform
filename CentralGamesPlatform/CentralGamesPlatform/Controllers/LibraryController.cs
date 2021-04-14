@@ -33,21 +33,6 @@ namespace CentralGamesPlatform.Controllers
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var licences = _licenceRepository.GetLicences(userId);
-            //List<int> orderDetailIds = new List<int>();
-            //foreach (var licence in licences)
-            //{
-            //    orderDetailIds.Add(licence.OrderDetailId);
-            //}
-            //List<OrderDetail> orderDetails = new List<OrderDetail>();
-            //for(int i = 0; i < orderDetailIds.Count(); i++)
-            //{
-            //    orderDetails.Add(_orderDetailRepository.GetOrderDetailById(orderDetailIds[i]));
-            //}
-            //List<Game> ownedGames = new List<Game>();
-            //foreach (var orderDetail in orderDetails)
-            //{
-            //    ownedGames.Add(_gameRepository.GetGameById(orderDetail.GameId));
-            //}
             var query = (from l in _myDatabaseContext.Licences
                          where l.UserId == userId
                          join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId

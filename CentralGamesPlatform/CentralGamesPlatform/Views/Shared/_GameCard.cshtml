@@ -14,7 +14,7 @@
                     <a class="btn btn-success mt-auto start-game" asp-controller="Start" asp-action="GiveAccessToCasinoGame" asp-route-gameId="@Model.GameId">Start Game</a>
                 </div>
             }
-            else if (ViewData["Owned"] != null && (bool)ViewData["Owned"] == true)
+            else if (ViewData["Owned"] != null && (bool)ViewData["Owned"] == true && Model.GameId != 1)
             {
                 <div class="playOwnedGame">
                     <a class="btn btn-success mt-auto start-game" asp-controller="Start" asp-action="GiveAccessToOwnedGame" asp-route-gameId="@Model.GameId">Play Game</a>
