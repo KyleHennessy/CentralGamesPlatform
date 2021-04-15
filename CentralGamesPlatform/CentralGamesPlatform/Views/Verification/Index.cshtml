@@ -9,14 +9,19 @@
 }
 <h1>Verify your account</h1>
 <p>To play casino games, you must verify your photo ID to prove you are genuine and you over the age of 18. This is not required to play and purchase video games</p>
+<p class="text-warning">* If you have already submitted your photo ID, you must wait until it has been approved by an admin to proceed</p>
 
-<h3>Max filke size is 2MB. Accepted file types are .jpg or .png</h3>
-<form asp-action="Index" enctype="multipart/form-data" method="post">
-    <div class="form-group">
-        <label asp-for="file"></label>
-        <input asp-for="file" class="form-control" type="file"/>
-        <span asp-validation-for="file" class="text-danger"></span>
-    </div>
-    <input type="submit" class="btn btn-primary" value="Submit" />
-    @*<button type="submit" class="btn btn-primary" value="Complete Order" asp-controller="Payment" asp-action="Index">Proceed</button>*@
-</form>
+<div class="card">
+    <h5 class="card-title text-dark">Max file size is 2MB. Photo must be in .jpg format</h5>
+    @*<div class="card-body">*@
+    <form asp-action="Index" enctype="multipart/form-data" method="post" class="card-body">
+        <div class="form-group text-dark">
+            <label asp-for="file"></label>
+            <input asp-for="file" class="form-control" type="file" style="width:40%;" />
+            <span asp-validation-for="file" class="text-danger"></span>
+        </div>
+        <input type="submit" class="btn btn-success" value="Submit" />
+        
+    </form>
+    @*</div>*@
+</div>

@@ -1,4 +1,5 @@
-﻿using CentralGamesPlatform.Models;
+﻿using CentralGamesPlatform.IRepositories;
+using CentralGamesPlatform.Models;
 using CentralGamesPlatform.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,14 +18,17 @@ namespace CentralGamesPlatform.Controllers
     {
         private readonly IGameRepository _gameRepository;
         private readonly IVerificationRepository _verificationRepository;
+        private readonly IDownloadRepository _downloadRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly MyDatabaseContext _myDatabaseContext;
         public AdminController(RoleManager<IdentityRole> roleManager, IGameRepository gameRepository, 
-                               MyDatabaseContext myDatabaseContext, IVerificationRepository verificationRepository)
+                               MyDatabaseContext myDatabaseContext, IVerificationRepository verificationRepository,
+                               IDownloadRepository downloadRepository)
         {
             _roleManager = roleManager;
             _gameRepository = gameRepository;
             _verificationRepository = verificationRepository;
+            _downloadRepository = downloadRepository;
             _myDatabaseContext = myDatabaseContext;
         }
         public IActionResult Index()
@@ -213,6 +217,12 @@ namespace CentralGamesPlatform.Controllers
             return View(verificationRequest);
         }
 
+        //public FileResult Download(int verificationId)
+        //{
+        //    var verification = _verificationRepository.RetrieveVerificationById(verificationId);
+        //    return File(verification.Content, "application/force-download","image.jpg");
+        //}
+
         [HttpPost, ActionName("UpdateVerificationRequest")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateVerificationRequestPost(int? verificationId)
@@ -240,6 +250,135 @@ namespace CentralGamesPlatform.Controllers
             }
             return View(verificationRequestToUpdate);
         }
+
+        public IActionResult DownloadDetails(int? gameId)
+        {
+            if (gameId == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            var game = _gameRepository.GetGameById((int)gameId);
+            if (game == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            string fileName = _downloadRepository.GetDownloadFileName((int)gameId);
+            if(fileName == null)
+            {
+                return RedirectToAction("DownloadCreate", new { gameId = (int)gameId });
+            }
+            double fileVersion = _downloadRepository.GetDownloadVersion((int)gameId);
+            DateTime lastUpdated = _downloadRepository.GetDownloadLastUpdated((int)gameId);
+            var downloadViewModel = new AdminDownloadViewModel
+            {
+                FileName = fileName,
+                FileVersion = fileVersion,
+                LastUpdated = lastUpdated,
+                GameId = (int)gameId
+            };
+            return View(downloadViewModel);
+        }
+        public IActionResult DownloadUpdate(int? gameId)
+        {
+            if (gameId == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            var download = _downloadRepository.RetrieveDownloadByGameId((int)gameId);
+            if (download == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            return View(download);
+        }
+
+        [HttpPost, ActionName("DownloadUpdate")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DownloadUpdatePost(Download download, int? downloadId)
+        {
+            if (downloadId == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+           
+            var downloadToUpdate = await _myDatabaseContext.Downloads.FirstOrDefaultAsync(d => d.DownloadId == downloadId);
+            downloadToUpdate.LastUpdated = DateTime.Now;
+            downloadToUpdate.FileName = download.FileName;
+            downloadToUpdate.FileFormat = download.FileFormat;
+            downloadToUpdate.VersionNumber = download.VersionNumber;
+            if (download.fileObject.file.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    download.fileObject.file.CopyTo(memoryStream);
+                    downloadToUpdate.Content = memoryStream.ToArray();
+                }
+            }
+            else
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
+            try
+            {
+                await _myDatabaseContext.SaveChangesAsync();
+                return RedirectToAction("DownloadDetails", new { gameId = downloadToUpdate.GameId });
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes to the database");
+            }
+
+            return View(downloadToUpdate);
+        }
+
+        public IActionResult DownloadCreate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DownloadCreate(Download download, int? gameId)
+        {
+            try
+            {
+                if (gameId != null)
+                {
+
+                    var game = _gameRepository.GetGameById((int)gameId);
+                    if (game.CategoryId >= 7 && game.CategoryId <= 9) 
+                    {
+                        var downloadNameExists = _downloadRepository.GetDownloadFileName(download.GameId);
+                        if (downloadNameExists == null)
+                        {
+
+                            if (download.fileObject.file.Length > 0)
+                            {
+                                using (var memoryStream = new MemoryStream())
+                                {
+                                    download.fileObject.file.CopyTo(memoryStream);
+                                    download.Content = memoryStream.ToArray();
+                                    _downloadRepository.CreateDownload(download);
+                                    return RedirectToAction("DownloadDetails", new { gameId = gameId });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes to the database");
+            }
+            return View(download);
+        }
+            
 
         //[HttpGet]
         //public IActionResult CreateRole()

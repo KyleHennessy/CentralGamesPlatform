@@ -25,6 +25,7 @@ namespace CentralGamesPlatform.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Index(FileUpload fileObject)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -54,6 +55,10 @@ namespace CentralGamesPlatform.Controllers
                         }
                     }
                 }
+                else
+                {
+                    ModelState.AddModelError("File", "The file is too small");
+                }
             }
             else if (verificationExists.Status == "Approved")
             {
@@ -74,49 +79,5 @@ namespace CentralGamesPlatform.Controllers
 
             return View();
         }
-
-        //[HttpPost]
-        //public IActionResult Index(FileUpload fileObj)
-        //{
-        //    string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        //    var verificationExists = _verificationRepository.RetrieveVerificationByUserId(userId);
-        //    if (verificationExists == null)
-        //    {
-        //        if (fileObj.file.Length > 0)
-        //        {
-        //            using (var memoryStream = new MemoryStream())
-        //            {
-        //                fileObj.file.CopyTo(memoryStream);
-        //                if (memoryStream.Length < 2097152)
-        //                {
-        //                    var verificationRequest = new Verification()
-        //                    {
-        //                        Content = memoryStream.ToArray(),
-        //                        UserId = userId
-        //                    };
-        //                    _verificationRepository.CreateVerification(verificationRequest);
-        //                    ViewBag.SuccessMessage = "You have submitted your photo ID for verification. This will be processed by an admin shortly. You will not be able to play casino games until it has been verified";
-        //                }
-        //                else
-        //                {
-        //                    ModelState.AddModelError("File", "The file is too large");
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else if (verificationExists.Status == "Approved") {
-        //        ViewBag.ErrorMessage = "Your account is already verified";
-        //    }
-        //    else if (verificationExists.Status == "Denied")
-        //    {
-        //        ViewBag.ErrorMessage = "Your photo ID could not be verified. Contact support if you think this is a mistake";
-        //    }
-        //    else if (verificationExists.Status == "Pending")
-        //    {
-        //        ViewBag.ErrorMessage = "Your verification request is currently pending";
-        //    }
-
-        //    return View();
-        //}
     }
 }

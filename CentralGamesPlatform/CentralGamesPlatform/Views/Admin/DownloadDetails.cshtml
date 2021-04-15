@@ -1,0 +1,44 @@
+﻿@model AdminDownloadViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Download</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group text-dark">
+                        <label asp-for="GameId" class="control-label"></label><br />
+                        <strong> @Html.DisplayFor(model => model.GameId)</strong>
+                    </div>
+
+                    <div class="form-group text-dark">
+                        <label asp-for="FileName" class="control-label"></label><br />
+                        <strong> @Html.DisplayFor(model => model.FileName)</strong>
+                    </div>
+
+                    <div class="form-group text-dark">
+                        <label asp-for="FileVersion" class="control-label"></label><br />
+                        <strong> @Html.DisplayFor(model => model.FileVersion)</strong>
+                    </div>
+                    <div class="form-group text-dark">
+                        <label asp-for="LastUpdated" class="control-label"></label><br />
+                        <strong> @Html.DisplayFor(model => model.LastUpdated)</strong>
+                    </div>
+                    <div class="text-center">
+                        <a class="btn btn-primary" asp-action="DownloadUpdate" asp-route-gameId="@Model.GameId">Update</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="ViewGames">Back to List</a>
+</div>

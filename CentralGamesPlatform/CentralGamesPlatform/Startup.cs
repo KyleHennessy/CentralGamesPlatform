@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using CentralGamesPlatform.Models;
 using Stripe;
 using Microsoft.AspNetCore.Identity;
+using CentralGamesPlatform.Repositories;
+using CentralGamesPlatform.IRepositories;
 
 namespace CentralGamesPlatform
 {
@@ -42,6 +44,7 @@ namespace CentralGamesPlatform
             services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<IPayoutRepository, PayoutRepository>();
             services.AddScoped<IVerificationRepository, VerificationRepository>();
+            services.AddScoped<IDownloadRepository, DownloadRepository>();
             services.AddScoped<ShoppingCart>(sc => ShoppingCart.GetCart(sc));
             services.AddHttpContextAccessor();
             services.AddSession();

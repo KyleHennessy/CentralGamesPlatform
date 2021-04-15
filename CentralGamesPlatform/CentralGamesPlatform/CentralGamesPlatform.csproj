@@ -41,6 +41,8 @@
   <ItemGroup>
     <Folder Include="Areas\CoinFlip\Data\" />
     <Folder Include="Areas\CoinFlip\Models\" />
+    <Folder Include="wwwroot\downloads\mobile\android\" />
+    <Folder Include="wwwroot\downloads\pc\windows\" />
   </ItemGroup>
 
 </Project>

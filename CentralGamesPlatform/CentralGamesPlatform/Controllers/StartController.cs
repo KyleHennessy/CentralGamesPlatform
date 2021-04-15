@@ -36,6 +36,11 @@ namespace CentralGamesPlatform.Controllers
                 return RedirectToAction("HandleError", "Error", new { code = 404 });
             }
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var verification = _verificationRepository.RetrieveVerificationByUserId(userId);
+            if (verification == null ||verification.Status != "Approved" )
+            {
+                return RedirectToAction("Index", "Verification", new { code = 404 });
+            }
             var ownedPasses = _casinoPassRepository.GetCasinoPassesByUserId(userId);
             var gameDetails = _gameRepository.GetGameById(gameId);
             //remove space from game name

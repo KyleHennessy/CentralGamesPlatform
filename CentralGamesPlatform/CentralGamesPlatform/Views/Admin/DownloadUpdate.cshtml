@@ -1,0 +1,55 @@
+﻿@model Download
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Add Download Game Files</h1>
+<p class="text-warning">When uploading a new game installer, it may take a while to upload so do not leave or refresh the page, it will be uploading as soon as you click update.</p>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="DownloadUpdate" enctype="multipart/form-data" class="card">
+            <div class="card-body">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group text-dark">
+                    <label asp-for="DownloadId" class="control-label"></label><br />
+                    <strong>@Html.DisplayFor(modelItem => Model.DownloadId)</strong>
+                </div>
+                <div class="form-group text-dark">
+                    <label asp-for="GameId" class="control-label"></label><br />
+                    <strong>@Html.DisplayFor(modelItem => Model.GameId)</strong>
+                </div>
+                <div class="form-group text-dark">
+                    <label asp-for="LastUpdated" class="control-label"></label><br />
+                    <strong>@Html.DisplayFor(modelItem => Model.LastUpdated)</strong>
+                </div>
+                <div class="form-group text-dark">
+                    <label asp-for="FileName" class="control-label"></label>
+                    <input asp-for="FileName" class="form-control" />
+                    <span asp-validation-for="FileName" class="text-danger"></span>
+                </div>
+                <div class="form-group text-dark">
+                    <label asp-for="FileFormat" class="control-label"></label>
+                    <input asp-for="FileFormat" class="form-control" />
+                    <span asp-validation-for="FileFormat" class="text-danger"></span>
+                </div>
+                <div class="form-group text-dark">
+                    <label asp-for="VersionNumber" class="control-label"></label>
+                    <input asp-for="VersionNumber" class="form-control" />
+                    <span asp-validation-for="VersionNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group text-dark">
+                    <label asp-for="fileObject.file" class="control-label"></label>
+                    <input asp-for="fileObject.file" class="form-control" type="file" style="width:60%;" />
+                    <span asp-validation-for="fileObject.file" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-primary" asp-route-downloadId="@Model.DownloadId"/>
+                </div>
+                <div>
+                    <a asp-action="ViewGames">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
