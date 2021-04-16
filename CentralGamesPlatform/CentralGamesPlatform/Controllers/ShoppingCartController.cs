@@ -45,7 +45,7 @@ namespace CentralGamesPlatform.Controllers
 			if(shoppingCartItems == null)
             {
 				Response.StatusCode = 404;
-				return RedirectToAction("HandleError", "Error", new { code = 409 });
+				return RedirectToAction("HandleError", "Error", new { code = 404 });
 			}
 			var query = (from l in _myDatabaseContext.Licences
 						 where l.UserId == userId
@@ -72,8 +72,7 @@ namespace CentralGamesPlatform.Controllers
 			}
             else
             {
-				Response.StatusCode = 409;
-				return RedirectToAction("HandleError", "Error", new { code = 409 });
+				return RedirectToAction("Index", "Library");
 			}
 			
 		}

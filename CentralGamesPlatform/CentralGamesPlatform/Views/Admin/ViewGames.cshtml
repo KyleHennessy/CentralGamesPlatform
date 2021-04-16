@@ -15,7 +15,7 @@
         <p>
             Find game by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
             <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-action="ViewGames">Back to Full List</a>
+            <a class="btn btn-primary" asp-action="ViewGames">Back to Full List</a>
         </p>
     </div>
 </form>
@@ -40,6 +40,8 @@
     <tbody>
         @foreach (var item in Model)
         {
+            if (item.GameId != -1)
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -48,14 +50,25 @@
                     €@Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId)
+                    @if (item.CategoryId >= 1 && item.CategoryId <= 3)
+                    {
+                        @:Casino Game
+                    }
+                    else if (item.CategoryId >= 4 && item.CategoryId <= 6)
+                    {
+                        @:Browser Game
+                    }
+                    else if (item.CategoryId >= 7 && item.CategoryId <= 9)
+                    {
+                        @:Download Game
+                    }
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-gameId="@item.GameId">Edit</a> |
-                    <a asp-action="Details" asp-route-gameId="@item.GameId">Details</a> | 
-                    <a asp-action="Delete" asp-route-gameId="@item.GameId">Delete</a>
+                    <a asp-action="Details" asp-route-gameId="@item.GameId">Details</a>
                 </td>
             </tr>
+            }
         }
     </tbody>
 </table>

@@ -71,7 +71,7 @@ namespace CentralGamesPlatform.Controllers
             {
                 games = games.OrderBy(g => g.Name);
             }
-            int pageSize = 5;
+            int pageSize = 10;
             return View(await PaginatedList<Game>.CreateAsync(games.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 

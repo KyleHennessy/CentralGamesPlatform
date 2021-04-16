@@ -116,7 +116,7 @@ namespace CentralGamesPlatform.Controllers
         }
         public IActionResult Edit(int? gameId)
         {
-            if (gameId == null)
+            if (gameId == null || gameId == -1)
             {
                 Response.StatusCode = 404;
                 return RedirectToAction("HandleError", "Error", new { code = 404 });
@@ -148,7 +148,7 @@ namespace CentralGamesPlatform.Controllers
                 try
                 {
                     await _myDatabaseContext.SaveChangesAsync();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("ViewGames");
                 }
                 catch (DbUpdateException)
                 {

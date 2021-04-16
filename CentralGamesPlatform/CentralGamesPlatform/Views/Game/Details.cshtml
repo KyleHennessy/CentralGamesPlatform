@@ -3,25 +3,70 @@
 <h1>@Model.Name</h1>
 
 <div class="figure">
-    <img alt="@Model.Name" src="@Model.ImageUrl" style="width:854px; height:480px;" />
-    <div class="figure-caption">
-        <h3 class="float-right">@Model.Price</h3>
-        <h3><a href="#">@Model.Name</a></h3>
-        <p>@Model.Description</p>
-    </div>
-    @if (Model.CategoryId >= 1 && Model.CategoryId <= 3)
-    {
-        <div class="startCasinoGame">
-            <a class="btn btn-success" asp-controller="Start" asp-action="GiveAccessToCasinoGame" asp-route-gameId="@Model.GameId">Start Game</a>
-        </div>
-    }
-    else
-    {
-        <div class="addToCart">
-            <p class="button">
-                <a class="btn btn-success" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="@Model.GameId">Add to Cart</a>
+    <img alt="@Model.Name" src="@Model.ImageUrl" style="width:100%; height:480px;" />
+</div>
+<div class="card">
+    <div class="card-body">
+        @if (Model.CategoryId >= 1 && Model.CategoryId <= 3)
+        {
+            <h4 class="float-right text-dark">Casino Game</h4>
+            <p class="text-dark">
+                <strong>A casino pass is required to play this game. You must have verified that you are over 18 before you can play. Once you start the game, you will spend your casino pass and won't be able to use it again unless you purchase another</strong>
             </p>
-        </div>
-    }
+            <div class="purchaseCasinoPass">
+                <a class="btn btn-success" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="-1">Purchase Casino Pass</a>
+            </div>
+        }
+        else
+        {
+            <h3 class="float-right text-dark">€@Model.Price</h3>
+        }
 
+        <p class="text-dark">@Model.Description</p>
+        <h5 class="text-dark">Supported Devices</h5>
+        <div>
+            @if (Model.CategoryId == 1 || Model.CategoryId == 4 || Model.CategoryId == 7)
+            {
+                <span>
+                    <img class="supportsWindows" src="~/images/icons/windows.png" />
+                </span>
+            }
+            else if (Model.CategoryId == 2 || Model.CategoryId == 5 || Model.CategoryId == 8)
+            {
+                <span>
+                    <img class="supportsAndroid" src="~/images/icons/android.png" />
+                </span>
+            }
+            else if (Model.CategoryId == -1)
+            {
+                <span>
+                    <img class="passIcon" src="~/images/icons/pass.png" />
+                </span>
+            }
+            else
+            {
+                <span>
+                    <img class="supportsWindows" src="~/images/icons/windows.png" />
+                </span>
+                <span>
+                    <img class="supportsAndroid" src="~/images/icons/android.png" />
+                </span>
+            }
+        </div>
+
+        @if (Model.CategoryId >= 1 && Model.CategoryId <= 3)
+        {
+            <div class="startCasinoGame">
+                <a class="btn btn-success" asp-controller="Start" asp-action="GiveAccessToCasinoGame" asp-route-gameId="@Model.GameId">Start Game</a>
+            </div>
+        }
+        else
+        {
+            <div class="addToCart">
+                <p class="button">
+                    <a class="btn btn-success" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-gameId="@Model.GameId">Add to Cart</a>
+                </p>
+            </div>
+        }
+    </div>
 </div>

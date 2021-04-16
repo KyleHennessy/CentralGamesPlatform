@@ -7,7 +7,7 @@
 <div class="row">
     @foreach (var game in Model.Games)
     {
-        if (Model.OwnedGameIds.Contains(game.GameId) && game.GameId != -1)
+        if (Model.OwnedGameIds != null && Model.OwnedGameIds.Contains(game.GameId) && game.GameId != -1)
         {
             @await Html.PartialAsync("_GameCard", game, new ViewDataDictionary(ViewData) { { "Owned", true } });
         }

@@ -51,10 +51,10 @@
 </div>
 <br/>
 <div>
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.GameId">Edit</a> |
+    <a class="btn btn-primary" asp-action="Edit" asp-route-gameId="@Model.GameId">Edit</a> |
     <a class="btn btn-success" asp-action="ViewGames">Back to List</a> |
     @if(Model.CategoryId >= 4 && Model.CategoryId <= 9)
     {
-         <a class="btn btn-primary" asp-action="DownloadDetails" asp-route-gameId="@Model.GameId">Download</a>
+         <a class="btn btn-primary" asp-action="DownloadDetails" asp-route-gameId="@Model.GameId">Game Files</a>
     }
 </div>

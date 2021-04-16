@@ -26,34 +26,63 @@ namespace CentralGamesPlatform.Controllers
 
 		public ViewResult List(string category)
 		{
-			string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-			var query = (from l in _myDatabaseContext.Licences
+			List<int> query;
+			if (User.Identity.IsAuthenticated)
+			{
+				string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+				query = (from l in _myDatabaseContext.Licences
 						 where l.UserId == userId
 						 join od in _myDatabaseContext.OrderDetails on l.OrderDetailId equals od.OrderDetailId
 						 join g in _myDatabaseContext.Games on od.GameId equals g.GameId
 						 select g.GameId).ToList();
-			IEnumerable <Game> games;
-			//IEnumerable ownedGameIds = query;
-			string currentCategory;
-			//if category is null then current category is all games
-			if (string.IsNullOrEmpty(category))
-			{
-				games = _gameRepository.GetAllGames.OrderBy(g => g.GameId);
-				currentCategory = "All Games";
+				IEnumerable<Game> games;
+				//IEnumerable ownedGameIds = query;
+				string currentCategory;
+				//if category is null then current category is all games
+				if (string.IsNullOrEmpty(category))
+				{
+					games = _gameRepository.GetAllGames.OrderBy(g => g.GameId);
+					currentCategory = "All Games";
+				}
+				else
+				{
+					//find games that matches category name argument
+					games = _gameRepository.GetAllGames.Where(c => c.Category.CategoryName == category);
+					currentCategory = _categoryRepository.GetAllCategories.FirstOrDefault(currentCategory => currentCategory.CategoryName == category)?.CategoryName;
+				}
+
+				return View(new GameListViewModel
+				{
+					Games = games,
+					OwnedGameIds = query,
+					CurrentCategory = currentCategory
+				});
 			}
 			else
 			{
-				//find games that matches category name argument
-				games = _gameRepository.GetAllGames.Where(c => c.Category.CategoryName == category);
-				currentCategory = _categoryRepository.GetAllCategories.FirstOrDefault(currentCategory => currentCategory.CategoryName == category)?.CategoryName;		
-			}
+				IEnumerable<Game> games;
+				//IEnumerable ownedGameIds = query;
+				string currentCategory;
+				//if category is null then current category is all games
+				if (string.IsNullOrEmpty(category))
+				{
+					games = _gameRepository.GetAllGames.OrderBy(g => g.GameId);
+					currentCategory = "All Games";
+				}
+				else
+				{
+					//find games that matches category name argument
+					games = _gameRepository.GetAllGames.Where(c => c.Category.CategoryName == category);
+					currentCategory = _categoryRepository.GetAllCategories.FirstOrDefault(currentCategory => currentCategory.CategoryName == category)?.CategoryName;
+				}
 
-			return View(new GameListViewModel
-			{
-				Games = games,
-				OwnedGameIds = query,
-				CurrentCategory = currentCategory
-			});
+				return View(new GameListViewModel
+				{
+					Games = games,
+					OwnedGameIds = null,
+					CurrentCategory = currentCategory
+				});
+			}
 		}
 
 		public IActionResult Details(int id)
