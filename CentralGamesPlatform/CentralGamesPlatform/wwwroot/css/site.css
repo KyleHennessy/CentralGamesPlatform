@@ -117,4 +117,10 @@ body {
 
 .custom-toggler .navbar-toggler {
     border-color: rgb(255,102,203);
-} 
+}
+
+canvas {
+    background: #eee;
+    display: block;
+    margin: 0 auto;
+}

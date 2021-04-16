@@ -217,11 +217,6 @@ namespace CentralGamesPlatform.Controllers
             return View(verificationRequest);
         }
 
-        //public FileResult Download(int verificationId)
-        //{
-        //    var verification = _verificationRepository.RetrieveVerificationById(verificationId);
-        //    return File(verification.Content, "application/force-download","image.jpg");
-        //}
 
         [HttpPost, ActionName("UpdateVerificationRequest")]
         [ValidateAntiForgeryToken]
@@ -352,7 +347,7 @@ namespace CentralGamesPlatform.Controllers
                 {
 
                     var game = _gameRepository.GetGameById((int)gameId);
-                    if (game.CategoryId >= 7 && game.CategoryId <= 9) 
+                    if (game.CategoryId >= 4 && game.CategoryId <= 9) 
                     {
                         var downloadNameExists = _downloadRepository.GetDownloadFileName(download.GameId);
                         if (downloadNameExists == null)

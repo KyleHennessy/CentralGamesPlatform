@@ -42,7 +42,8 @@ namespace CentralGamesPlatform.Controllers
 
 			if(_shoppingCart.ShoppingCartItems.Count == 0)
 			{
-				ModelState.AddModelError("", "Your cart is empty");
+				Response.StatusCode = 400;
+				return RedirectToAction("HandleError", "Error", new { code = 400 });
 			}
 
 			if (ModelState.IsValid)

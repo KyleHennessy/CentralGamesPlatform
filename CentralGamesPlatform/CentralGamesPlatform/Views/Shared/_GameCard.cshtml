@@ -16,10 +16,18 @@
             }
             else if (ViewData["Owned"] != null && (bool)ViewData["Owned"] == true && Model.GameId != 1)
             {
-                if (Model.CategoryId >= 7 && Model.CategoryId <= 9)
+                if (Model.CategoryId >= 4 && Model.CategoryId <= 9)
                 {
                     <div class="playOwnedGame">
-                        <a class="btn btn-success mt-auto start-game" asp-controller="Download" asp-action="DownloadGame" asp-route-gameId="@Model.GameId">Play Game</a>
+                        @if (Model.CategoryId >= 4 && Model.CategoryId <= 6)
+                        {
+                            <a class="btn btn-success mt-auto start-game" asp-controller="Download" asp-action="PlayGame" asp-route-gameId="@Model.GameId">Play Game</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-success mt-auto start-game" asp-controller="Download" asp-action="DownloadGame" asp-route-gameId="@Model.GameId">Play Game</a>
+
+                        }
                     </div>
                 }
                 else

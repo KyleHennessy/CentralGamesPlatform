@@ -1,50 +1,63 @@
 ﻿@model Order
 
-<form asp-action="Checkout" method="post">
     <h4>Purchase</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Checkout" method="post" class="card">
+                <h5 class="card-title text-dark">Billing Address</h5>
+                <div class="card-body">
+                    <div class="form-group text-dark">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="bg-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="bg-danger"></span>
+                    <div class="form-group text-dark">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="bg-danger"></span>
+                    </div>
+
+                    <div class="form-group text-dark">
+                        <label asp-for="Address"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="bg-danger"></span>
+                    </div>
+
+                    <div class="form-group text-dark">
+                        <label asp-for="Town"></label>
+                        <input asp-for="Town" class="form-control" />
+                        <span asp-validation-for="Town" class="bg-danger"></span>
+                    </div>
+
+                    <div class="form-group text-dark">
+                        <label asp-for="County"></label>
+                        <input asp-for="County" class="form-control" />
+                        <span asp-validation-for="County" class="bg-danger"></span>
+                    </div>
+
+                    <div class="form-group text-dark">
+                        <label asp-for="EirCode"></label>
+                        <input asp-for="EirCode" class="form-control" />
+                        <span asp-validation-for="EirCode" class="bg-danger"></span>
+                    </div>
+
+                    <div class="form-group text-dark">
+                        <label asp-for="PhoneNumber"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="bg-danger"></span>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary" value="Proceed" />
+                </div>
+                @*<button type="submit" class="btn btn-primary" value="Complete Order" asp-controller="Payment" asp-action="Index">Proceed</button>*@
+            </form>
+        </div>
+        <div class="col-md-6">
+            <img src="~/images/logo/logo-blue.png" height="400" width="400" />
+            <br/>
+            <p>
+                You're one step closer! Fill in your details so you can proceed.
+            </p>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="bg-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="bg-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Town"></label>
-        <input asp-for="Town" class="form-control" />
-        <span asp-validation-for="Town" class="bg-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="County"></label>
-        <input asp-for="County" class="form-control" />
-        <span asp-validation-for="County" class="bg-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="EirCode"></label>
-        <input asp-for="EirCode" class="form-control" />
-        <span asp-validation-for="EirCode" class="bg-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="bg-danger"></span>
-    </div>
-
-    <input type="submit" class="btn btn-primary" value="Complete Order" />
-    @*<button type="submit" class="btn btn-primary" value="Complete Order" asp-controller="Payment" asp-action="Index">Proceed</button>*@
-</form>

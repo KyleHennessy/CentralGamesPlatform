@@ -1,5 +1,6 @@
 ﻿using CentralGamesPlatform.Models;
 using CentralGamesPlatform.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace CentralGamesPlatform.Controllers
 			return View(shoppingCartViewModel);
 		}
 
+		[Authorize]
 		public RedirectToActionResult AddToShoppingCart(int gameId)
 		{
 			string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
