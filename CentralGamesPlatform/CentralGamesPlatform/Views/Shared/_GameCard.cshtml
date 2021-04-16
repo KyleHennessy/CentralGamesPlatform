@@ -4,7 +4,7 @@
         <img src="@Model.ImageThumbnailUrl" alt="image thumbnail" width="348" height="348"/>
         <div class="card-body d-flex flex-column">
             <div class="figure-caption">
-                <h3 class="float-sm-right">@Model.Price.ToString("c")</h3>
+                <h3 class="float-sm-right">€@Model.Price</h3>
                 @if (Model.CategoryId != -1)
                 {
                     <h3><a asp-controller="Game" asp-action="Details" asp-route-id="@Model.GameId">@Model.Name</a></h3>

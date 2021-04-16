@@ -143,42 +143,5 @@ namespace CentralGamesPlatform.Controllers
 		}
 
 
-
-
-
-
-		//public IActionResult CreateAccount()
-		//{
-		//	return View();
-		//}
-		//[HttpPost]
-		//public IActionResult CreateAccount(string email)
-		//{
-		//	//if (!_payoutRepository.ConnectAccountExists)
-		//	//{
-		//		var options = new AccountCreateOptions
-		//		{
-		//			Type = "express",
-		//			Email = email,
-		//		};
-		//		var service = new AccountService();
-		//		var accountService = service.Create(options);
-		//		string accountId = accountService.Id;
-		//		//_userRepository.AddNewUser();
-
-		//		var linkoptions = new AccountLinkCreateOptions
-		//		{
-		//			Account = accountId,
-		//			RefreshUrl = "https://localhost:44394/Payout/CreateAccount",
-		//			ReturnUrl = "https://localhost:44394/Payout/Index",
-		//			Type = "account_onboarding"
-		//		};
-		//		var linkservice = new AccountLinkService();
-		//		var accountLink = linkservice.Create(linkoptions);
-		//		return Redirect(accountLink.Url);
-		//	//}
-
-		//	//return View();
-		//}
 	}
 }
