@@ -47,7 +47,6 @@ namespace CentralGamesPlatform.Controllers
             //remove space from game name
             string gameName = Regex.Replace(gameDetails.Name, @"\s+", "");
 
-            //CasinoPass activePass = ownedPasses.FirstOrDefault(p => (p.Active == true) && (p.Expired == false) && (p.GameId == 1));
             CasinoPass activePass = ownedPasses.FirstOrDefault(p => (p.GameId == gameId) && (p.Active == true) && (p.Expired == false));
             //if its active already
             if (activePass != null)

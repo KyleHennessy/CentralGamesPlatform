@@ -37,7 +37,6 @@ namespace CentralGamesPlatform.Controllers
 						 join g in _myDatabaseContext.Games on od.GameId equals g.GameId
 						 select g.GameId).ToList();
 				IEnumerable<Game> games;
-				//IEnumerable ownedGameIds = query;
 				string currentCategory;
 				//if category is null then current category is all games
 				if (string.IsNullOrEmpty(category))
@@ -62,7 +61,6 @@ namespace CentralGamesPlatform.Controllers
 			else
 			{
 				IEnumerable<Game> games;
-				//IEnumerable ownedGameIds = query;
 				string currentCategory;
 				//if category is null then current category is all games
 				if (string.IsNullOrEmpty(category))

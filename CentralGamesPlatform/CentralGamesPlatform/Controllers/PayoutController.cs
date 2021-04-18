@@ -25,7 +25,6 @@ namespace CentralGamesPlatform.Controllers
 		{
             _payoutRepository = payoutRepository;
 			_walletRepository = walletRepository;
-            //StripeConfiguration.ApiKey = "sk_test_51IB0Z4BTwx1LYfRRop1pYWwRVKBAs0K7KZBRbKTubudFUXJPN5BlooRahipg8qIkpIQ49d6c4YZE9ErcziO23QtR00rzwq6cbk";
         }
 		public IActionResult Index()
 		{
@@ -53,8 +52,8 @@ namespace CentralGamesPlatform.Controllers
 				var payout = createPayoutResponse.Result<CreatePayoutResponse>();
 
 				submittedPayout.PayPalBatchId = payout.BatchHeader.PayoutBatchId;
-				//_walletRepository.SubtractFromWallet(userId, submittedPayout.AmountTransfered);
-				_payoutRepository.CreatePayout(submittedPayout);
+                _walletRepository.SubtractFromWallet(userId, submittedPayout.AmountTransfered);
+                _payoutRepository.CreatePayout(submittedPayout);
 				ViewBag.SuccessMessage = "You have successfully transfered €" + amountTransfered + " to your PayPal account";
 			}
             else
@@ -105,44 +104,5 @@ namespace CentralGamesPlatform.Controllers
 				return null;
 			}
 		}
-
-		public async static Task<HttpResponse> GetPayout(string batchId)
-        {
-            try
-            {
-                PayoutsGetRequest request = new PayoutsGetRequest(batchId);
-				var getResponse = await PayPalClient.client().Execute(request);
-				var result = getResponse.Result<PayoutBatch>();
-                
-				return getResponse;
-
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-		public async static Task<HttpResponse> GetPayoutItem(string itemId, bool debug = false)
-        {
-			try
-			{
-				PayoutsItemGetRequest request = new PayoutsItemGetRequest(itemId);
-				var getResponse = await PayPalClient.client().Execute(request);
-				var result = getResponse.Result<PayoutItemResponse>();
-				if (debug)
-				{
-					//do something
-
-				}
-				return getResponse;
-			}
-			catch
-			{
-				return null;
-			}
-		}
-
-
 	}
 }

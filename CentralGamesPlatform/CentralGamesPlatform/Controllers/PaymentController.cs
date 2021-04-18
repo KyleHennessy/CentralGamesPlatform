@@ -25,7 +25,6 @@ namespace CentralGamesPlatform.Controllers
 		private readonly IOrderDetailRepository _orderDetailRepository;
 		private readonly ILicenceRepository _licenseRepository;
 		private readonly ICasinoPassRepository _casinoPassRepository;
-		//private readonly string WebHookSecret = "whsec_s5NmxKzkSFLlmSiqnkJiMxLqnwM9QeOA";
 		public PaymentController(IOrderRepository orderRepository, ShoppingCart shoppingCart, IPaymentRepository paymentRepository, 
 								 IOrderDetailRepository orderDetailRepository, ILicenceRepository licenseRepository, 
 								 ICasinoPassRepository casinoPassRepository)
@@ -42,7 +41,7 @@ namespace CentralGamesPlatform.Controllers
 		}
 		public IActionResult Index(int id)
 		{
-			//int orderId = (int)TempData["orderId"];
+	
 			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
 			var paymentSummaryViewModel = new PaymentSummaryViewModel
 			{
@@ -56,7 +55,6 @@ namespace CentralGamesPlatform.Controllers
 		[HttpPost("create-checkout-session")]
 		public IActionResult CreateCheckoutSession()
 		{
-			//Models.Order order = (Models.Order)TempData["order"];
 			decimal orderTotal;
 			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
 			orderTotal = _shoppingCart.GetShoppingCartTotal() * 100;
