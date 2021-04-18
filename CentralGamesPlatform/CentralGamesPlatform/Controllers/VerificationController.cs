@@ -29,11 +29,13 @@ namespace CentralGamesPlatform.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(FileUpload fileObject)
         {
+            string[] permittedExtensions = { ".png", ".jpg" };
+            var uploadedExtension = Path.GetExtension(fileObject.file.FileName).ToLowerInvariant();
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var verificationExists = _verificationRepository.RetrieveVerificationByUserId(userId);
             if (verificationExists == null)
             {
-                if (fileObject.file.Length > 0)
+                if (fileObject.file.Length > 0 && permittedExtensions.Contains(uploadedExtension))
                 {
                     using (var memoryStream = new MemoryStream())
                     {
@@ -58,7 +60,7 @@ namespace CentralGamesPlatform.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("File", "The file is too small");
+                    ModelState.AddModelError("File", "The file is too small or is in the wrong format");
                 }
             }
             else if (verificationExists.Status == "Approved")

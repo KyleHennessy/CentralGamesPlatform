@@ -61,6 +61,10 @@
                 <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-primary" asp-route-gameId="@Model.GameId" />
                     <a class="btn btn-success" asp-action="ViewGames">Back to List</a>
+                    @if (Model.CategoryId >= 4 && Model.CategoryId <= 9)
+                    {
+                        <a class="btn btn-primary" asp-action="DownloadDetails" asp-route-gameId="@Model.GameId">Game Files</a>
+                    }
                 </div>
             </div>
         </form>

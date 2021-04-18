@@ -129,3 +129,32 @@ canvas {
     display: block;
     margin: 0 auto;
 }
+.carouselImage{
+    height:700px;
+    width:100%;
+}
+@media only screen and (max-width:767px) {
+    .carouselImage {
+        height:400px;
+    }
+}
+.gameCard{
+    /*max-width: 350px;*/
+    min-width:350px;
+}
+/*.gameCardImage {
+    max-width: 348px !important;
+    min-width: 348px !important;
+}*/
+@media only screen and (max-width:765px) {
+    .gameCard {
+        width: 100%;
+    }
+}
+@media only screen and (max-width:575px) {
+    .gameCard {
+        width: 100%;
+    }
+}
+
+

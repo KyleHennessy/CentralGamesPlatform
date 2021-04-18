@@ -11,21 +11,25 @@
 <p>To convert your winnings into real world cash, you must have an active PayPal account. If you do not have one, please register for one at <a href="www.paypal.com">this link here</a></p>
 
 <h3>If you already have an account, enter your PayPal email and the amount you want to transfer and click 'Transfer'</h3>
-<form asp-action="Index" method="post">
-    <h4>Purchase</h4>
+<form asp-action="Index" method="post" class="card">
+    <div class="card-body">
 
-    <div class="form-group">
-        <label asp-for="PayPalEmail"></label>
-        <input asp-for="PayPalEmail" class="form-control" />
-        <span asp-validation-for="PayPalEmail" class="bg-danger"></span>
+        <h4 class="card-title text-dark">Purchase</h4>
+
+        <div class="form-group text-dark">
+            <label asp-for="PayPalEmail"></label>
+            <input asp-for="PayPalEmail" class="form-control" />
+            <span asp-validation-for="PayPalEmail" class="bg-danger"></span>
+        </div>
+
+        <div class="form-group text-dark">
+            <label asp-for="AmountTransfered"></label>
+            <input asp-for="AmountTransfered" class="form-control" />
+            <span asp-validation-for="AmountTransfered" class="bg-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Complete Order" />
+        </div>
+        
     </div>
-
-    <div class="form-group">
-        <label asp-for="AmountTransfered"></label>
-        <input asp-for="AmountTransfered" class="form-control" />
-        <span asp-validation-for="AmountTransfered" class="bg-danger"></span>
-    </div>
-
-    <input type="submit" class="btn btn-primary" value="Complete Order" />
-    @*<button type="submit" class="btn btn-primary" value="Complete Order" asp-controller="Payment" asp-action="Index">Proceed</button>*@
 </form>

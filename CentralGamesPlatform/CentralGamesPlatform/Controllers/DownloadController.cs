@@ -21,11 +21,12 @@ namespace CentralGamesPlatform.Controllers
             _downloadRepository = downloadRepository;
             _myDatabaseContext = myDatabaseContext;
         }
-        public FileResult DownloadGame(int? gameId)
+        public IActionResult DownloadGame(int? gameId)
         {
             if (gameId == null)
             {
-                return null;
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
             }
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var query = (from l in _myDatabaseContext.Licences
@@ -36,9 +37,15 @@ namespace CentralGamesPlatform.Controllers
                          select g).SingleOrDefault();
             if (query == null)
             {
-                return null;
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
             }
             var download = _downloadRepository.RetrieveDownloadByGameId((int)gameId);
+            if (download == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("HandleError", "Error", new { code = 404 });
+            }
             return File(download.Content, "application/force-download", download.FileName + download.FileFormat);
         }
         public IActionResult PlayGame(int? gameId)
