@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using CentralGamesPlatform.ViewModels;
+using CentralGamesPlatform.IRepositories;
 
 namespace CentralGamesPlatform.Controllers
 {

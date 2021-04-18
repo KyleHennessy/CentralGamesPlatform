@@ -1,4 +1,5 @@
-﻿using CentralGamesPlatform.Models;
+﻿using CentralGamesPlatform.IRepositories;
+using CentralGamesPlatform.Models;
 using CentralGamesPlatform.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

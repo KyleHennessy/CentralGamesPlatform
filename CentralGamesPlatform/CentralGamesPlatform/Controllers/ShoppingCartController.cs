@@ -1,4 +1,5 @@
-﻿using CentralGamesPlatform.Models;
+﻿using CentralGamesPlatform.IRepositories;
+using CentralGamesPlatform.Models;
 using CentralGamesPlatform.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace CentralGamesPlatform.Controllers
 {
 	public class ShoppingCartController : Controller
-	{
+    {
 		private readonly IGameRepository _gameRepository;
 		private readonly ShoppingCart _shoppingCart;
 		private readonly MyDatabaseContext _myDatabaseContext;

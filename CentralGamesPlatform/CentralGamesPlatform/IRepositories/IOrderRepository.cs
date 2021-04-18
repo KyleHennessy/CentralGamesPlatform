@@ -1,9 +1,10 @@
-﻿using System;
+﻿using CentralGamesPlatform.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CentralGamesPlatform.Models
+namespace CentralGamesPlatform.IRepositories
 {
 	public interface IOrderRepository
 	{

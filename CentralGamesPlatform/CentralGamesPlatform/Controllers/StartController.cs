@@ -1,4 +1,5 @@
-﻿using CentralGamesPlatform.Models;
+﻿using CentralGamesPlatform.IRepositories;
+using CentralGamesPlatform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

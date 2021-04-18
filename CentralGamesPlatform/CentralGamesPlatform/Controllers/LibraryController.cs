@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using CentralGamesPlatform.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using CentralGamesPlatform.IRepositories;
 
 namespace CentralGamesPlatform.Controllers
 {

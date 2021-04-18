@@ -1,22 +1,22 @@
-﻿using System;
+﻿using CentralGamesPlatform.IRepositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CentralGamesPlatform.Models
 {
-    public class PayoutRepository : IPayoutRepository
+    public class ResultRepository : IResultRepository
     {
         private readonly MyDatabaseContext _myDatabaseContext;
-        public PayoutRepository(MyDatabaseContext myDatabaseContext)
+        public ResultRepository(MyDatabaseContext myDatabaseContext)
         {
             _myDatabaseContext = myDatabaseContext;
         }
-        public void CreatePayout(Payout payout)
+        public void CreateResult(Result result)
         {
-            payout.PayoutDate = DateTime.Now;
-
-            _myDatabaseContext.Payouts.Add(payout);
+            result.DateResultPlaced = DateTime.Now;
+            _myDatabaseContext.Results.Add(result);
             _myDatabaseContext.SaveChanges();
         }
     }

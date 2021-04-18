@@ -12,6 +12,7 @@ using System.Text;
 using CentralGamesPlatform.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using CentralGamesPlatform.IRepositories;
 
 namespace CentralGamesPlatform.Controllers
 {

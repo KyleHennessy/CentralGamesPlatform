@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Principal;
 using System.Security.Claims;
+using CentralGamesPlatform.IRepositories;
 
 namespace CentralGamesPlatform.Controllers
 {

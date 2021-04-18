@@ -8,6 +8,7 @@ using CentralGamesPlatform.Models;
 using CentralGamesPlatform.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using CentralGamesPlatform.IRepositories;
 
 namespace CentralGamesPlatform.Controllers
 {
