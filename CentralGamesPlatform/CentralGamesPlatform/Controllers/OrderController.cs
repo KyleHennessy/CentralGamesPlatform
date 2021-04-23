@@ -64,11 +64,5 @@ namespace CentralGamesPlatform.Controllers
 			
 			return View(order);
 		}
-
-		//public IActionResult CheckoutComplete()
-		//{
-		//	ViewBag.CheckoutCompleteMessage = "Thank you for your order. Your purchased games are available from your account immediately";
-		//	return View();
-		//}
 	}
 }

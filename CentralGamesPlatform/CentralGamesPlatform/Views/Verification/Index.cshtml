@@ -1,4 +1,7 @@
 ﻿@model FileUpload
+@{
+    ViewData["Title"] = "Verification";
+}
 @if (ViewBag.SuccessMessage != null)
 {
     <p class="text-success">@ViewBag.SuccessMessage</p>
@@ -13,7 +16,6 @@
 
 <div class="card">
     <h5 class="card-title text-dark">Max file size is 2MB. Photo must be in .jpg format</h5>
-    @*<div class="card-body">*@
     <form asp-action="Index" enctype="multipart/form-data" method="post" class="card-body">
         <div class="form-group text-dark">
             <label asp-for="file"></label>
@@ -21,7 +23,6 @@
             <span asp-validation-for="file" class="text-danger"></span>
         </div>
         <input type="submit" class="btn btn-success" value="Submit" />
-        
+
     </form>
-    @*</div>*@
 </div>

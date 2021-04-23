@@ -1,9 +1,12 @@
-﻿@model Payout 
-@if(ViewBag.SuccessMessage != null)
+﻿@model Payout
+@{
+    ViewData["Title"] = "Payout";
+}
+@if (ViewBag.SuccessMessage != null)
 {
     <p class="text-success">@ViewBag.SuccessMessage</p>
 }
-@if(ViewBag.ErrorMessage != null)
+@if (ViewBag.ErrorMessage != null)
 {
     <p class="text-danger">@ViewBag.ErrorMessage</p>
 }
@@ -19,17 +22,17 @@
         <div class="form-group text-dark">
             <label asp-for="PayPalEmail"></label>
             <input asp-for="PayPalEmail" class="form-control" />
-            <span asp-validation-for="PayPalEmail" class="bg-danger"></span>
+            <span asp-validation-for="PayPalEmail" class="text-danger"></span>
         </div>
 
         <div class="form-group text-dark">
             <label asp-for="AmountTransfered"></label>
             <input asp-for="AmountTransfered" class="form-control" />
-            <span asp-validation-for="AmountTransfered" class="bg-danger"></span>
+            <span asp-validation-for="AmountTransfered" class="text-danger"></span>
         </div>
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Complete Order" />
         </div>
-        
+
     </div>
 </form>
