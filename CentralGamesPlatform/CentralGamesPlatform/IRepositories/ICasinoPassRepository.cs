@@ -13,5 +13,6 @@ namespace CentralGamesPlatform.IRepositories
         CasinoPass GetCasinoPass(Guid casinoPassId);
         void ActivateCasinoPass(Guid casinoPassId, int gameId);
         void ExpireCasinoPass(Guid casinoPassId);
+        int AmountPurchasedToday(string userId);
     }
 }

@@ -2,6 +2,10 @@
 @{
     ViewData["Title"] = "Library";
 }
+@if (ViewBag.ErrorMessage != null)
+{
+    <p class="text-warning">@ViewBag.ErrorMessage</p>
+}
 @if (Model.OwnedPasses.Any())
 {
     <h2>You currently own @Model.OwnedPasses.Count() casino game passes. These can be used only once on any casino game</h2>

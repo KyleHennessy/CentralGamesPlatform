@@ -54,5 +54,15 @@ namespace CentralGamesPlatform.Models
                           select p).ToList();
             return passes;
         }
+
+        public int AmountPurchasedToday(string userId)
+        {
+            DateTime todaysDateTime = DateTime.Today; //Todays date and time at 00:00:00
+            DateTime yesterdaysDateTime = DateTime.Today.AddDays(1).AddTicks(-1); //Todays date and time at 23:59:59
+            var count = (from p in _myDatabaseContext.CasinoPasses.OrderByDescending(p => p.PassPlaced)
+                         where (p.PassPlaced > todaysDateTime && p.PassPlaced <= yesterdaysDateTime)
+                         select p).Count();
+            return count;
+        }
     }
 }

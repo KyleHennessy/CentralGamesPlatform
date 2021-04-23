@@ -31,6 +31,12 @@ namespace CentralGamesPlatform.Controllers
 
 		public IActionResult Checkout()
 		{
+			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
+			if (_shoppingCart.ShoppingCartItems.Count == 0)
+			{
+				Response.StatusCode = 400;
+				return RedirectToAction("Index", "Home");
+			}
 			return View();
 		}
 

@@ -86,8 +86,10 @@ namespace CentralGamesPlatform.Controllers
 					},
 				},
 				Mode = "payment",
-				SuccessUrl = "https://centralgamesplatform.azurewebsites.net/Payment/Success?session_id={CHECKOUT_SESSION_ID}",
-				CancelUrl = "https://centralgamesplatform.azurewebsites.net/Payment/Failed",
+				SuccessUrl = "https://localhost:44394/Payment/Success?session_id={CHECKOUT_SESSION_ID}",
+				CancelUrl = "https://localhost:44394/Payment/Failed"
+				//SuccessUrl = "https://centralgamesplatform.azurewebsites.net/Payment/Success?session_id={CHECKOUT_SESSION_ID}",
+				//CancelUrl = "https://centralgamesplatform.azurewebsites.net/Payment/Failed",
 			};
 			var service = new SessionService();
 			Session session = service.Create(options);
