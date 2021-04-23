@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "Library";
 }
-@if (ViewBag.ErrorMessage != null)
+@if (TempData["ErrorMessage"] != null)
 {
-    <p class="text-warning">@ViewBag.ErrorMessage</p>
+    <p class="text-warning">@TempData["ErrorMessage"]</p>
 }
 @if (Model.OwnedPasses.Any())
 {

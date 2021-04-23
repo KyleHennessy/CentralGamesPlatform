@@ -28,9 +28,13 @@ namespace CentralGamesPlatform.Controllers
 			_casinoPassRepository = casinoPassRepository;
 		}
 
-		public ViewResult Index()
+		public IActionResult Index()
 		{
 			_shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
+			if(_shoppingCart.ShoppingCartItems.Count == 0)
+            {
+				return RedirectToAction("Index", "Home");
+            }
 
 			var shoppingCartViewModel = new ShoppingCartViewModel
 			{
@@ -57,7 +61,8 @@ namespace CentralGamesPlatform.Controllers
 				var count = shoppingCartItems.Where(g => g.Game.GameId == -1).Select(c => c.Amount).FirstOrDefault();
 				if (amountPurchasedToday >= 10 || (count >= 10 || count >= (10 - amountPurchasedToday)))
                 {
-					ViewBag.ErrorMessage = "You have purchased too many casino passes today. This platform does not enable impulsive gambling. Consider looking at some video games we have on offer for a safe and fun outlet!";
+					TempData["ErrorMessage"] = "You have purchased too many casino passes today. This platform does not enable or encourage impulsive gambling in any way. Consider looking at some video games we have on offer for a safe and fun outlet!";
+					_shoppingCart.ClearCart();
 					return RedirectToAction("Index", "Library");
                 }
             }
