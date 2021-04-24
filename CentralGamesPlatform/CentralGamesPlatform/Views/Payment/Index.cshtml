@@ -21,7 +21,7 @@
                 <td class="text-left">@item.Game.Name</td>
                 <td class="text-right">€@item.Game.Price</td>
                 <td class="text-right">
-                    €@((item.Amount * item.Game.Price))
+                    €@((item.Amount * item.Game.Price).ToString("F"))
                 </td>
             </tr>
         }
@@ -29,7 +29,7 @@
     <tfoot>
         <tr>
             <td colspan="3" class="text-right">Total</td>
-            <td class="text-right">€@Model.ShoppingCartTotal</td>
+            <td class="text-right">€@((Model.ShoppingCartTotal).ToString("F"))</td>
         </tr>
     </tfoot>
 </table>
