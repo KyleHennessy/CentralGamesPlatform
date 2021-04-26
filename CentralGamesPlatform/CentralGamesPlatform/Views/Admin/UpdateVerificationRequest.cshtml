@@ -8,9 +8,6 @@
 
 <h4>Verification</h4>
 <p>Determine if the photo ID submitted by the user is legitimate based on the image provided.</p>
-<div>
-    <a asp-action="ViewVerificationRequests">Back to List</a>
-</div>
 <hr />
 <div class="row">
     <div class="col-md-6">
@@ -44,7 +41,6 @@
                 <div class="form-group text-dark">
                     <input type="submit" value="Update" class="btn btn-primary" asp-route-verificationId="@Model.VerificationId" />
                 </div>
-                <a class="btn btn-primary" asp-action="Download" asp-route-verificationId="1">Download</a>
                 <div>
                     <a asp-action="ViewVerificationRequests">Back to List</a>
                 </div>

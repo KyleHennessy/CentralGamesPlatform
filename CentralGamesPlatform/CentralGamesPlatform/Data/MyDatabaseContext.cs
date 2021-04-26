@@ -13,6 +13,7 @@ namespace CentralGamesPlatform.Models
         public MyDatabaseContext (DbContextOptions<MyDatabaseContext> options) : 
             base(options)
         {
+            Database.SetCommandTimeout(10000);
         }
         public DbSet<Game> Games { get; set; }
         public DbSet<Category> Categories { get; set; }
