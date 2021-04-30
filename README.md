@@ -23,7 +23,7 @@ Central Games Platform is designed with a business to consumer/business to busin
 * MVC Design Pattern
 * Repository data access abstraction pattern
 
-#How To Use
+# How To Use
 ---
 ## Public Version
 This project is hosted in the cloud using Microsoft Azure's App Service Plan and can be accessed through this URL:
