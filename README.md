@@ -39,3 +39,6 @@ This project can also be ran locally on your machine:
 6. Paste the localhost and port number into a web browser of your choice. Example `https://localhost:50001`
 
 Alternatively, the app can be ran through Visual Studio, providing ASP.NET Core is installed as a component.
+
+Refer to page 20 of the technical manual for test card details for payments
+Refer to page 27 of the technical manual for test email for payouts
